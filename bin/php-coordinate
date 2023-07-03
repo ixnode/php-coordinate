@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+# ------------
+# This library offers a collection of various PHP coordinate classes like Coordinate, etc.
+# It converts various coordinate strings and values into a unique format.
+#
+# @author    Björn Hempel <bjoern@hempel.li>
+# @version   0.1.0 (2023-07-03)
+# ------------
+
+# ------------
+# MIT License
+#
+# Copyright (c) 2023 Björn Hempel
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# Written by Björn Hempel <bjoern@hempel.li>.
+# ------------
+
+# path configs
+PATH_SCRIPT_ABSOLUTE="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1; pwd -P)"
+PATH_WORKING="$PWD"
+
+# some environment variables
+ENV_SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
+ENV_AUTHOR='Björn Hempel'
+ENV_EMAIL='bjoern@hempel.li'
+
+# path files
+PATH_VERSION_RELATIVE="VERSION"
+
+# =====
+#
+# Helper function: Get current version from file
+#
+# =====
+function getCurrentVersion()
+{
+    local versionPath="$PATH_WORKING/$PATH_VERSION_RELATIVE"
+
+    if [ ! -f "$versionPath" ]; then
+        echo && error "Version file \"$versionPath\" not found. Abort."
+        echo && showVersion && showHelp && exit 1
+    fi
+
+    # shellcheck disable=SC2155
+    local version=$(cat "$versionPath")
+
+    echo "$version"
+}
+
+# =====
+#
+# Helper function: Get current version date from file
+#
+# =====
+function getCurrentVersionDate()
+{
+    local versionPath="$PATH_WORKING/$PATH_VERSION_RELATIVE"
+
+    if [ ! -f "$versionPath" ]; then
+        echo && error "Version file \"$versionPath\" not found. Abort."
+        echo && showVersion && showHelp && exit 1
+    fi
+
+    date -r $versionPath "+%m-%d-%Y %H:%M:%S"
+}
+
+# =====
+#
+# Helper function: show help
+#
+# =====
+function showHelp
+{
+    cat "${BASH_SOURCE[0]}" | grep --color=never "# help:" | grep -v 'cat parameter' | sed 's/[ ]*# help:\([ ]\|\)//g' | sed "s~%scriptname%~$ENV_SCRIPT_NAME~g" | sed "s~\$PWD~\"$PWD\"~"
+}
+
+# =====
+#
+# Helper function: show version
+#
+# =====
+function showVersion
+{
+    local currentVersion=$(getCurrentVersion)
+    local currentVersionDate=$(getCurrentVersionDate)
+
+    echo "$ENV_SCRIPT_NAME $currentVersion ($currentVersionDate) - $ENV_AUTHOR <$ENV_EMAIL>"
+}
+
+# =====
+#
+# Task: Reads parameter
+#
+# =====
+function readParameter
+{
+    # help:
+    # help: Usage: %scriptname% [...options] [version]
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+
+            # help:  -h,    --help                        Shows this help.
+            -h|--help)
+                echo && showVersion && showHelp && exit 0
+                ;;
+
+            # help:  -V,    --version                     Shows the version number.
+            -V|--version)
+                showVersion && exit 0
+                ;;
+
+	          # help:
+            # collect all unknown parameters
+            *)
+                local parameter="$1"
+
+                if [[ "$parameter" = -* ]]; then
+                    echo && error "Unknown option \"$parameter\". Abort."
+                    echo && showVersion && showHelp && exit 1
+                fi
+
+                PARAMETERS+=("$parameter")
+                ;;
+        esac
+        shift
+    done
+}
+
+# a) Read parameters
+readParameter "$@"
+
+# b) Unsupported mode
+showHelp
