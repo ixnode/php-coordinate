@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ixnode\PhpCoordinate\Tests\Unit;
 
 use Ixnode\PhpCoordinate\Coordinate;
+use Ixnode\PhpCoordinate\CoordinateValue;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +28,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class CoordinateTest extends TestCase
 {
+    private const GOOGLE_MAPS_SPOT_LINK_1 = 'https://www.google.com/maps/place/V%C3%B6lkerschlachtdenkmal,+04277+Leipzig/@51.3123709,12.4132924,17z/data=!3m1!4b1!4m6!3m5!1s0x47a6f9a9d013ca23:0x277b49a142da988c!8m2!3d51.3123709!4d12.4132924!16s%2Fg%2F12ls2f87w?entry=ttu';
+    private const GOOGLE_MAPS_REDIRECT_LINK_1 = 'https://maps.app.goo.gl/PHq5axBaDdgRWj4T6';
+
     /**
      * Test wrapper.
      *
@@ -74,7 +78,7 @@ final class CoordinateTest extends TestCase
         return [
 
             /**
-             * getLatitude (parser check)
+             * basic: getLatitude (parser check)
              */
             [++$number, 'getLatitude', null, '51.0504,13.7373', 51.0504], // Dresden, Germany
             [++$number, 'getLatitude', null, '51.0504, 13.7373', 51.0504], // Dresden, Germany
@@ -90,7 +94,13 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLatitude', null, '-31.425299, -64.201743', -31.425299], // Córdoba, Argentina
 
             /**
-             * getLongitude (parser check)
+             * complex: getLatitude (parser check)
+             */
+            [++$number, 'getLatitude', null, self::GOOGLE_MAPS_SPOT_LINK_1, 51.31237], // Leipzig, Germany
+            [++$number, 'getLatitude', null, self::GOOGLE_MAPS_REDIRECT_LINK_1, 54.07304829999999], // Malbork, Poland
+
+            /**
+             * basic: getLongitude (parser check)
              */
             [++$number, 'getLongitude', null, '51.0504,13.7373', 13.7373], // Dresden, Germany
             [++$number, 'getLongitude', null, '51.0504, 13.7373', 13.7373], // Dresden, Germany
@@ -106,7 +116,13 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLongitude', null, '-31.425299, -64.201743', -64.201743], // Córdoba, Argentina
 
             /**
-             * getLatitudeDMS (converter check)
+             * complex: getLongitude (parser check)
+             */
+            [++$number, 'getLongitude', null, self::GOOGLE_MAPS_SPOT_LINK_1, 12.4132924], // Leipzig, Germany
+            [++$number, 'getLongitude', null, self::GOOGLE_MAPS_REDIRECT_LINK_1, 18.992402], // Malbork, Poland
+
+            /**
+             * getLatitudeDMS v1 (converter check)
              */
             [++$number, 'getLatitudeDMS', null, '51.0504, 13.7373', '51°3′1.44″N'], // Dresden, Germany
             [++$number, 'getLatitudeDMS', null, '-33.940525, 18.414006', '33°56′25.89″S'], // Kapstadt, South Africa
@@ -114,12 +130,28 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLatitudeDMS', null, '-31.425299, -64.201743', '31°25′31.0764″S'], // Córdoba, Argentina
 
             /**
-             * getLongitudeDMS (converter check)
+             * getLongitudeDMS v1 (converter check)
              */
             [++$number, 'getLongitudeDMS', null, '51.0504, 13.7373', '13°44′14.28″E'], // Dresden, Germany
             [++$number, 'getLongitudeDMS', null, '-33.940525, 18.414006', '18°24′50.4216″E'], // Kapstadt, South Africa
             [++$number, 'getLongitudeDMS', null, '40.690069, -74.045508', '74°2′43.8288″W'], // New York, United States
             [++$number, 'getLongitudeDMS', null, '-31.425299, -64.201743', '64°12′6.2748″W'], // Córdoba, Argentina
+
+            /**
+             * getLatitudeDMS v2 (converter check)
+             */
+            [++$number, 'getLatitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '51.0504, 13.7373', 'N51°3′1.44″'], // Dresden, Germany
+            [++$number, 'getLatitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '-33.940525, 18.414006', 'S33°56′25.89″'], // Kapstadt, South Africa
+            [++$number, 'getLatitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '40.690069, -74.045508', 'N40°41′24.2484″'], // New York, United States
+            [++$number, 'getLatitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '-31.425299, -64.201743', 'S31°25′31.0764″'], // Córdoba, Argentina
+
+            /**
+             * getLongitudeDMS v2 (converter check)
+             */
+            [++$number, 'getLongitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '51.0504, 13.7373', 'E13°44′14.28″'], // Dresden, Germany
+            [++$number, 'getLongitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '-33.940525, 18.414006', 'E18°24′50.4216″'], // Kapstadt, South Africa
+            [++$number, 'getLongitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '40.690069, -74.045508', 'W74°2′43.8288″'], // New York, United States
+            [++$number, 'getLongitudeDMS', CoordinateValue::FORMAT_DMS_SHORT_2, '-31.425299, -64.201743', 'W64°12′6.2748″'], // Córdoba, Argentina
 
         ];
     }

@@ -49,18 +49,44 @@ $longitude = $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
+#### 2.1.2 Google Url Parser Parser
+
+##### 2.1.2.1 Parser formats
+
+| Given value (string)                                   | latitude (float) | longitude (float) |
+|--------------------------------------------------------|------------------|-------------------|
+| Copied Google Maps Short Url<sup><code>1)</code></sup> | _54.07304830_    | _18.992402_       |
+| Copied Google Maps Link<sup><code>2)</code></sup>      | _51.31237_       | _12.4132924_      |
+
+* <sup><code>1)</code></sup> [Copied Google Maps Short Url](https://maps.app.goo.gl/PHq5axBaDdgRWj4T6)
+* <sup><code>2)</code></sup> [Copied Google Maps Link](https://www.google.com/maps/place/V%C3%B6lkerschlachtdenkmal,+04277+Leipzig/@51.3123709,12.4132924,17z/data=!3m1!4b1!4m6!3m5!1s0x47a6f9a9d013ca23:0x277b49a142da988c!8m2!3d51.3123709!4d12.4132924!16s%2Fg%2F12ls2f87w?entry=ttu)
+
+##### 2.1.2.2 Code example
+
+```php
+$coordinate = new Coordinate('https://maps.app.goo.gl/PHq5axBaDdgRWj4T6');
+
+$latitude = $coordinate->getLatitude();
+// (float) 54.07304830
+
+$longitude = $coordinate->getLongitude();
+// (float) 18.992402
+```
+
 ### 2.2 Converter
 
 #### 2.2.1 Methods
 
-| Method            | Type     | Description                                                 | Example             |
-|-------------------|----------|-------------------------------------------------------------|---------------------|
-| `getLatitude`     | _float_  | Returns the decimal degree presentation of latitude value.  | _-31.425299_        |
-| `getLongitude`    | _float_  | Returns the decimal degree presentation of longitude value. | _-64.201743_        |
-| `getLatitudeDD`   | _float_  | Alias of `getLatitude`.                                     | _-31.425299_        |
-| `getLongitudeDD`  | _float_  | Alias of `getLongitude`.                                    | _-64.201743_        |
-| `getLatitudeDMS`  | _string_ | Returns the dms representation of the latitude value.       | `"31°25′31.0764″S"` |
-| `getLongitudeDMS` | _string_ | Returns the dms representation of the longitude value.      | `"64°12′6.2748″W"`  |
+| Method            | Type     | Parameter                             | Description                                                 | Example             |
+|-------------------|----------|---------------------------------------|-------------------------------------------------------------|---------------------|
+| `getLatitude`     | _float_  | ---                                   | Returns the decimal degree presentation of latitude value.  | _-31.425299_        |
+| `getLongitude`    | _float_  | ---                                   | Returns the decimal degree presentation of longitude value. | _-64.201743_        |
+| `getLatitudeDD`   | _float_  | ---                                   | Alias of `getLatitude`.                                     | _-31.425299_        |
+| `getLongitudeDD`  | _float_  | ---                                   | Alias of `getLongitude`.                                    | _-64.201743_        |
+| `getLatitudeDMS`  | _string_ | ---                                   | Returns the dms representation of the latitude value.       | `"31°25′31.0764″S"` |
+| `getLongitudeDMS` | _string_ | ---                                   | Returns the dms representation of the longitude value.      | `"64°12′6.2748″W"`  |
+| `getLatitudeDMS`  | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2` | Returns the dms representation of the latitude value (v2).  | `"S31°25′31.0764″"` |
+| `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2` | Returns the dms representation of the longitude value (v2). | `"W64°12′6.2748″"`  |
 
 #### 2.2.2 Code example
 

@@ -4,8 +4,70 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "606e51cd757c39e7abb5efec435ed6b7",
-    "packages": [],
+    "content-hash": "a1f8e60d09fef8126c8d54158570f25f",
+    "packages": [
+        {
+            "name": "ixnode/php-exception",
+            "version": "0.1.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ixnode/php-exception.git",
+                "reference": "0c82481422f56005a14d965c1b6884ad7c37ae0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ixnode/php-exception/zipball/0c82481422f56005a14d965c1b6884ad7c37ae0c",
+                "reference": "0c82481422f56005a14d965c1b6884ad7c37ae0c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.13",
+                "ixnode/bash-version-manager": "^0.1.3",
+                "jetbrains/phpstorm-attributes": "^1.0",
+                "phpmd/phpmd": "^2.13",
+                "phpstan/phpstan": "^1.9",
+                "phpunit/phpunit": "^9.5",
+                "povils/phpmnd": "^3.0",
+                "rector/rector": "^0.15.1"
+            },
+            "bin": [
+                "bin/php-exception"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ixnode\\PhpException\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Björn Hempel",
+                    "email": "bjoern@hempel.li",
+                    "homepage": "https://www.hempel.li/"
+                }
+            ],
+            "description": "PHP Exception - This library offers some ready to use PHP Exceptions.",
+            "keywords": [
+                "exception",
+                "exception-handling",
+                "php",
+                "php8",
+                "php8.2"
+            ],
+            "support": {
+                "issues": "https://github.com/ixnode/php-exception/issues",
+                "source": "https://github.com/ixnode/php-exception/tree/0.1.21"
+            },
+            "time": "2023-07-03T21:13:30+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/pcre",
@@ -722,66 +784,6 @@
                 "source": "https://github.com/ixnode/php-container/tree/0.1.9"
             },
             "time": "2023-06-28T08:41:31+00:00"
-        },
-        {
-            "name": "ixnode/php-exception",
-            "version": "0.1.20",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ixnode/php-exception.git",
-                "reference": "ba3eaa2f7d6b10d37bd2ac59cd9402a4bc991da2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ixnode/php-exception/zipball/ba3eaa2f7d6b10d37bd2ac59cd9402a4bc991da2",
-                "reference": "ba3eaa2f7d6b10d37bd2ac59cd9402a4bc991da2",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.13",
-                "ixnode/bash-version-manager": "^0.1.3",
-                "jetbrains/phpstorm-attributes": "^1.0",
-                "phpmd/phpmd": "^2.13",
-                "phpstan/phpstan": "^1.9",
-                "phpunit/phpunit": "^9.5",
-                "povils/phpmnd": "^3.0",
-                "rector/rector": "^0.15.1"
-            },
-            "bin": [
-                "bin/php-exception"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ixnode\\PhpException\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Björn Hempel",
-                    "email": "bjoern@hempel.li",
-                    "homepage": "https://www.hempel.li/"
-                }
-            ],
-            "description": "PHP Exception",
-            "keywords": [
-                "exception",
-                "exception-handling",
-                "php",
-                "php8"
-            ],
-            "support": {
-                "issues": "https://github.com/ixnode/php-exception/issues",
-                "source": "https://github.com/ixnode/php-exception/tree/0.1.20"
-            },
-            "time": "2023-07-01T16:29:06+00:00"
         },
         {
             "name": "ixnode/php-size-byte",
@@ -4653,7 +4655,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0"
+        "php": "^8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

@@ -15,6 +15,7 @@ namespace Ixnode\PhpCoordinate;
 
 use Ixnode\PhpCoordinate\Tests\Unit\CoordinateTest;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
+use Ixnode\PhpException\Parser\ParserException;
 
 /**
  * Class Coordinate
@@ -26,9 +27,11 @@ use Ixnode\PhpException\Case\CaseUnsupportedException;
  */
 class Coordinate
 {
-    protected CoordinateValue $latitude;
+    protected CoordinateValueLatitude $latitude;
 
-    protected CoordinateValue $longitude;
+    protected CoordinateValueLongitude $longitude;
+
+    protected const PARSED_VALUES = 2;
 
     /**
      * @param string $coordinate
@@ -44,21 +47,6 @@ class Coordinate
                 $coordinate
             ));
         }
-    }
-
-    /**
-     * Builds a float number from given integer and decimal part.
-     *
-     * @param string $integer
-     * @param string $decimals
-     * @return float
-     */
-    private function buildFloat(string $integer, string $decimals): float
-    {
-        $integerConverted = floatval($integer);
-        $decimalsConverted = floatval(intval($decimals) * 10 ** (-strlen($decimals)));
-
-        return $integerConverted + ($integerConverted < 0 ? -1 : 1) * $decimalsConverted;
     }
 
     /**
@@ -81,21 +69,27 @@ class Coordinate
      * @param string $coordinate
      * @return bool
      * @throws CaseUnsupportedException
+     * @throws ParserException
      */
     private function doParse(string $coordinate): bool
     {
-        $matches = [];
+        $coordinateParser = new CoordinateParser($coordinate);
 
-        /* Try to parse decimal values like: "51.0504, 13.7373", "51.0504 13.7373", etc. */
-        if (preg_match('~(-?[0-9]+)[.]([0-9]+)[,: ]*(-?[0-9]+)[.]([0-9]+)~', $coordinate, $matches)) {
-            $this->buildCoordinate(
-                $this->buildFloat(strval($matches[1]), strval($matches[2])),
-                $this->buildFloat(strval($matches[3]), strval($matches[4]))
-            );
-            return true;
+        $parsed = $coordinateParser->doParse();
+
+        if ($parsed === false || !$coordinateParser->isParsed()) {
+            throw new ParserException($coordinate, 'latitude, longitude parser');
         }
 
-        return false;
+        if (count($parsed) !== self::PARSED_VALUES) {
+            throw new CaseUnsupportedException(sprintf('The number of parsed values must be "%s".', self::PARSED_VALUES));
+        }
+
+        [$latitude, $longitude] = $parsed;
+
+        $this->buildCoordinate($latitude, $longitude);
+
+        return true;
     }
 
     /**
