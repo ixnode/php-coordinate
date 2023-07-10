@@ -90,14 +90,25 @@ abstract class BaseCoordinateParser
 
     private ?string $error = null;
 
-    protected bool $parsed = false;
+    /** @var float[]|false|null $parsed */
+    protected array|false|null $parsed = null;
 
     /**
      * @param string $coordinate
+     * @throws CaseUnsupportedException
      */
     public function __construct(protected string $coordinate)
     {
+        $this->parsed = $this->doParse();
     }
+
+    /**
+     * Parser: Tries to parse the given coordinate string (coordinate, link, etc.).
+     *
+     * @return float[]|false
+     * @throws CaseUnsupportedException
+     */
+    abstract public function doParse(): array|false;
 
     /**
      * Point: Returns the latitude and longitude values from given regexp matches.
@@ -114,8 +125,6 @@ abstract class BaseCoordinateParser
                 self::MATCHES_LENGTH_COORDINATE
             ));
         }
-
-        $this->parsed = true;
 
         return [
             round($this->getFloatValueFromSimple([$matches[0], $matches[1], $matches[2]]), self::DECIMAL_PRECISION),
@@ -287,6 +296,21 @@ abstract class BaseCoordinateParser
      */
     public function isParsed(): bool
     {
+        return !is_null($this->parsed);
+    }
+
+    /**
+     * Returns the parsed value.
+     *
+     * @return float[]|false
+     * @throws CaseUnsupportedException
+     */
+    public function getParsed(): array|false
+    {
+        if (is_null($this->parsed)) {
+            throw new CaseUnsupportedException('Please execute the parse method before.');
+        }
+
         return $this->parsed;
     }
 }

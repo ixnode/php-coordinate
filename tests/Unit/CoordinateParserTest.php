@@ -48,7 +48,7 @@ final class CoordinateParserTest extends TestCase
 
         /* Act */
         $coordinateParser = new CoordinateParser($given);
-        $parsed = $coordinateParser->parse();
+        $parsed = $coordinateParser->getParsed();
 
         /* Assert */
         $this->assertIsNumeric($number); // To avoid phpmd warning.

@@ -33,7 +33,7 @@ class CoordinateParser extends BaseCoordinateParser
      * @return float[]|false
      * @throws CaseUnsupportedException
      */
-    public function parse(): array|false
+    public function doParse(): array|false
     {
         $matches = [];
 
@@ -98,8 +98,6 @@ class CoordinateParser extends BaseCoordinateParser
 
             $point[] = round($pointValue, self::DECIMAL_PRECISION);
         }
-
-        $this->parsed = true;
 
         return $point;
     }

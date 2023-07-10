@@ -76,7 +76,7 @@ class Coordinate
     {
         $coordinateParser = new CoordinateParser($coordinate);
 
-        $parsed = $coordinateParser->parse();
+        $parsed = $coordinateParser->getParsed();
 
         if ($parsed === false || !$coordinateParser->isParsed()) {
             throw new ParserException($coordinate, 'latitude, longitude parser');
