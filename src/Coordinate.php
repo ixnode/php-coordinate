@@ -36,6 +36,7 @@ class Coordinate
     /**
      * @param string $coordinate
      * @throws CaseUnsupportedException
+     * @throws ParserException
      */
     public function __construct(string $coordinate)
     {
@@ -75,7 +76,7 @@ class Coordinate
     {
         $coordinateParser = new CoordinateParser($coordinate);
 
-        $parsed = $coordinateParser->doParse();
+        $parsed = $coordinateParser->parse();
 
         if ($parsed === false || !$coordinateParser->isParsed()) {
             throw new ParserException($coordinate, 'latitude, longitude parser');
