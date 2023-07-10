@@ -25,17 +25,17 @@ use Ixnode\PhpCoordinate\Coordinate;
 
 ### 2.1 Parser
 
-#### 2.1.1 Basic Decimal Parser
+#### 2.1.1 Basic decimal degree parser
 
 ##### 2.1.1.1 Parser formats
 
-| Given value (string)              | latitude (float) | longitude (float) |
-|-----------------------------------|------------------|-------------------|
-| `"51.0504,13.7373"`               | _51.0504_        | _13.7373_         |
-| `"51.0504, 13.7373"`              | _51.0504_        | _13.7373_         |
-| `"51.0504 13.7373"`               | _51.0504_        | _13.7373_         |
-| `"POINT(-31.425299, -64.201743)"` | _-31.425299_     | _-64.201743_      |
-| `"POINT(-31.425299 -64.201743)"`  | _-31.425299_     | _-64.201743_      |
+| Given value (string)              | Latitude (float) | Longitude (float) | Place              |
+|-----------------------------------|------------------|-------------------|--------------------|
+| `"51.0504,13.7373"`               | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"51.0504, 13.7373"`              | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"51.0504 13.7373"`               | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"POINT(-31.425299, -64.201743)"` | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
+| `"POINT(-31.425299 -64.201743)"`  | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
 
 ##### 2.1.1.2 Code example
 
@@ -49,19 +49,43 @@ $longitude = $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
-#### 2.1.2 Google Url Parser Parser
+#### 2.1.2 Basic DMS Parser
 
 ##### 2.1.2.1 Parser formats
 
-| Given value (string)                                   | latitude (float) | longitude (float) |
-|--------------------------------------------------------|------------------|-------------------|
-| Copied Google Maps Short Url<sup><code>1)</code></sup> | _54.07304830_    | _18.992402_       |
-| Copied Google Maps Link<sup><code>2)</code></sup>      | _51.31237_       | _12.4132924_      |
+| Given value (string)                       | Latitude (float) | Longitude (float) | Place              |
+|--------------------------------------------|------------------|-------------------|--------------------|
+| `"51°3′1.44″N,13°44′14.28″E"`              | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"51°3′1.44″N, 13°44′14.28″E"`             | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"51°3′1.44″N 13°44′14.28″E"`              | _51.0504_        | _13.7373_         | Dresden, Germany   |
+| `"POINT(31°25′31.0764″S, 64°12′6.2748″W)"` | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
+| `"POINT(31°25′31.0764″S 64°12′6.2748″W)"`  | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
+
+##### 2.1.2.2 Code example
+
+```php
+$coordinate = new Coordinate('51°3′1.44″N 13°44′14.28″E');
+
+$latitude = $coordinate->getLatitude();
+// (float) 51.0504
+
+$longitude = $coordinate->getLongitude();
+// (float) 13.7373
+```
+
+#### 2.1.3 Google Url Parser Parser
+
+##### 2.1.3.1 Parser formats
+
+| Given value (string)                                   | Latitude (float) | Longitude (float) | Place            |
+|--------------------------------------------------------|------------------|-------------------|------------------|
+| Copied Google Maps Short Url<sup><code>1)</code></sup> | _54.07304830_    | _18.992402_       | Malbork, Poland  |
+| Copied Google Maps Link<sup><code>2)</code></sup>      | _51.31237_       | _12.4132924_      | Leipzig, Germany |
 
 * <sup><code>1)</code></sup> [Copied Google Maps Short Url](https://maps.app.goo.gl/PHq5axBaDdgRWj4T6)
 * <sup><code>2)</code></sup> [Copied Google Maps Link](https://www.google.com/maps/place/V%C3%B6lkerschlachtdenkmal,+04277+Leipzig/@51.3123709,12.4132924,17z/data=!3m1!4b1!4m6!3m5!1s0x47a6f9a9d013ca23:0x277b49a142da988c!8m2!3d51.3123709!4d12.4132924!16s%2Fg%2F12ls2f87w?entry=ttu)
 
-##### 2.1.2.2 Code example
+##### 2.1.3.2 Code example
 
 ```php
 $coordinate = new Coordinate('https://maps.app.goo.gl/PHq5axBaDdgRWj4T6');
