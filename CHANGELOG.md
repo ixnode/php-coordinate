@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.2] - 2023-07-10
+
+* Add DMS parser
+* Add README.md updates
+
 ### [0.1.1] - 2023-07-03
 
 * Add Google Maps URL parser
