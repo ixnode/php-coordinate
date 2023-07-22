@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Ixnode\PhpCoordinate;
 
+use Ixnode\PhpCoordinate\Base\BaseCoordinateValue;
 use Ixnode\PhpCoordinate\Tests\Unit\CoordinateTest;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 use Ixnode\PhpException\Parser\ParserException;
+use JetBrains\PhpStorm\NoReturn;
 
 /**
  * Class Coordinate
@@ -33,19 +35,45 @@ class Coordinate
 
     protected const PARSED_VALUES = 2;
 
+    protected const ARGUMENTS_1 = 1;
+
+    protected const ARGUMENTS_2 = 2;
+
     /**
-     * @param string $coordinate
      * @throws CaseUnsupportedException
      * @throws ParserException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function __construct(string $coordinate)
+    #[NoReturn]
+    public function __construct()
     {
-        $result = $this->doParse($coordinate);
+        $arguments = func_get_args();
+
+        if (count($arguments) < self::ARGUMENTS_1) {
+            throw new CaseUnsupportedException('No coordinates are given.');
+        }
+
+        $result = match (true) {
+            /* 1 argument as string given. */
+            count($arguments) === self::ARGUMENTS_1 && is_string($arguments[0]) =>
+                $this->doParse($arguments[0]),
+
+            /* 2 arguments and both are floats. */
+            count($arguments) === self::ARGUMENTS_2 && is_float($arguments[0]) && is_float($arguments[1]) =>
+                $this->buildCoordinate($arguments[0], $arguments[1]),
+
+            /* 2 arguments and at least one is a string. */
+            count($arguments) === self::ARGUMENTS_2 && is_string($arguments[0]) && is_float($arguments[1]),
+            count($arguments) === self::ARGUMENTS_2 && is_float($arguments[0]) && is_string($arguments[1]),
+            count($arguments) === self::ARGUMENTS_2 && is_string($arguments[0]) && is_string($arguments[1]) =>
+                $this->doParse(sprintf('%s %s', $arguments[0], $arguments[1])),
+            default => throw new CaseUnsupportedException('Unsupported parameter given.'),
+        };
 
         if ($result === false) {
             throw new CaseUnsupportedException(sprintf(
                 'Unable to parse coordinate "%s".',
-                $coordinate
+                implode(', ', $arguments)
             ));
         }
     }
@@ -55,13 +83,15 @@ class Coordinate
      *
      * @param float $latitude
      * @param float $longitude
-     * @return void
+     * @return bool
      * @throws CaseUnsupportedException
      */
-    private function buildCoordinate(float $latitude, float $longitude): void
+    private function buildCoordinate(float $latitude, float $longitude): bool
     {
         $this->latitude = new CoordinateValueLatitude($latitude);
         $this->longitude = new CoordinateValueLongitude($longitude);
+
+        return true;
     }
 
     /**
@@ -140,7 +170,7 @@ class Coordinate
      * @return string
      * @throws CaseUnsupportedException
      */
-    public function getLatitudeDMS(string $format = CoordinateValue::FORMAT_DMS_SHORT_1): string
+    public function getLatitudeDMS(string $format = BaseCoordinateValue::FORMAT_DMS_SHORT_1): string
     {
         return $this->latitude->getDms($format);
     }
@@ -152,7 +182,7 @@ class Coordinate
      * @return string
      * @throws CaseUnsupportedException
      */
-    public function getLongitudeDMS(string $format = CoordinateValue::FORMAT_DMS_SHORT_1): string
+    public function getLongitudeDMS(string $format = BaseCoordinateValue::FORMAT_DMS_SHORT_1): string
     {
         return $this->longitude->getDms($format);
     }

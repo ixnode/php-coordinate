@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ixnode\PhpCoordinate;
 
+use Ixnode\PhpCoordinate\Base\BaseCoordinateValue;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 
 /**
@@ -22,7 +23,7 @@ use Ixnode\PhpException\Case\CaseUnsupportedException;
  * @version 0.1.0 (2023-07-03)
  * @since 0.1.0 (2023-07-03) First version.
  */
-class CoordinateValueLongitude extends CoordinateValue
+class CoordinateValueLongitude extends BaseCoordinateValue
 {
     /**
      * @param float $decimalDegree
@@ -30,6 +31,6 @@ class CoordinateValueLongitude extends CoordinateValue
      */
     public function __construct(protected float $decimalDegree)
     {
-        parent::__construct($decimalDegree, CoordinateValue::TYPE_LONGITUDE);
+        parent::__construct($decimalDegree, BaseCoordinateValue::TYPE_LONGITUDE);
     }
 }

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Ixnode\PhpCoordinate;
+namespace Ixnode\PhpCoordinate\Base;
 
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 
@@ -22,7 +22,7 @@ use Ixnode\PhpException\Case\CaseUnsupportedException;
  * @version 0.1.0 (2023-07-03)
  * @since 0.1.0 (2023-07-03) First version.
  */
-abstract class CoordinateValue
+abstract class BaseCoordinateValue
 {
     /** @var array{degree: int<0, 180>, minutes: int<0, 59>, seconds: float, direction: 'E'|'N'|'S'|'W'} */
     protected array $dms;
