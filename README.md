@@ -20,7 +20,7 @@
 use Ixnode\PhpCoordinate\Coordinate;
 ```
 
-### 1.1 Simple example
+### 1.1 Converter example
 
 ```php
 $coordinate = new Coordinate(51.0504, 13.7373);
