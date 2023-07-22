@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Ixnode\PhpCoordinate;
 
+use Ixnode\PhpCoordinate\Base\BaseCoordinate;
 use Ixnode\PhpCoordinate\Base\BaseCoordinateValue;
 use Ixnode\PhpCoordinate\Tests\Unit\CoordinateTest;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
-use Ixnode\PhpException\Parser\ParserException;
-use JetBrains\PhpStorm\NoReturn;
 
 /**
  * Class Coordinate
@@ -27,101 +26,18 @@ use JetBrains\PhpStorm\NoReturn;
  * @since 0.1.0 (2023-07-03) First version.
  * @link CoordinateTest
  */
-class Coordinate
+class Coordinate extends BaseCoordinate
 {
-    protected CoordinateValueLatitude $latitude;
+    protected const PRECISION_METERS = 1;
 
-    protected CoordinateValueLongitude $longitude;
+    protected const PRECISION_KILOMETERS = 3;
 
-    protected const PARSED_VALUES = 2;
+    final public const RETURN_METERS = 'meters';
 
-    protected const ARGUMENTS_1 = 1;
+    final public const RETURN_KILOMETERS = 'kilometers';
 
-    protected const ARGUMENTS_2 = 2;
-
-    /**
-     * @throws CaseUnsupportedException
-     * @throws ParserException
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    #[NoReturn]
-    public function __construct()
-    {
-        $arguments = func_get_args();
-
-        if (count($arguments) < self::ARGUMENTS_1) {
-            throw new CaseUnsupportedException('No coordinates are given.');
-        }
-
-        $result = match (true) {
-            /* 1 argument as string given. */
-            count($arguments) === self::ARGUMENTS_1 && is_string($arguments[0]) =>
-                $this->doParse($arguments[0]),
-
-            /* 2 arguments and both are floats. */
-            count($arguments) === self::ARGUMENTS_2 && is_float($arguments[0]) && is_float($arguments[1]) =>
-                $this->buildCoordinate($arguments[0], $arguments[1]),
-
-            /* 2 arguments and at least one is a string. */
-            count($arguments) === self::ARGUMENTS_2 && is_string($arguments[0]) && is_float($arguments[1]),
-            count($arguments) === self::ARGUMENTS_2 && is_float($arguments[0]) && is_string($arguments[1]),
-            count($arguments) === self::ARGUMENTS_2 && is_string($arguments[0]) && is_string($arguments[1]) =>
-                $this->doParse(sprintf('%s %s', $arguments[0], $arguments[1])),
-            default => throw new CaseUnsupportedException('Unsupported parameter given.'),
-        };
-
-        if ($result === false) {
-            throw new CaseUnsupportedException(sprintf(
-                'Unable to parse coordinate "%s".',
-                implode(', ', $arguments)
-            ));
-        }
-    }
-
-    /**
-     * Builds this coordinate from given latitude and longitude values.
-     *
-     * @param float $latitude
-     * @param float $longitude
-     * @return bool
-     * @throws CaseUnsupportedException
-     */
-    private function buildCoordinate(float $latitude, float $longitude): bool
-    {
-        $this->latitude = new CoordinateValueLatitude($latitude);
-        $this->longitude = new CoordinateValueLongitude($longitude);
-
-        return true;
-    }
-
-    /**
-     * Parses the given coordinate string.
-     *
-     * @param string $coordinate
-     * @return bool
-     * @throws CaseUnsupportedException
-     * @throws ParserException
-     */
-    private function doParse(string $coordinate): bool
-    {
-        $coordinateParser = new CoordinateParser($coordinate);
-
-        $parsed = $coordinateParser->getParsed();
-
-        if ($parsed === false || !$coordinateParser->isParsed()) {
-            throw new ParserException($coordinate, 'latitude, longitude parser');
-        }
-
-        if (count($parsed) !== self::PARSED_VALUES) {
-            throw new CaseUnsupportedException(sprintf('The number of parsed values must be "%s".', self::PARSED_VALUES));
-        }
-
-        [$latitude, $longitude] = $parsed;
-
-        $this->buildCoordinate($latitude, $longitude);
-
-        return true;
-    }
+    /* WGS84 */
+    final public const EARTH_RADIUS_METER = 6_371_000;
 
     /**
      * Returns the latitude of given coordinate.
@@ -130,7 +46,7 @@ class Coordinate
      */
     public function getLatitude(): float
     {
-        return $this->getLatitudeDD();
+        return $this->getLatitudeDecimal();
     }
 
     /**
@@ -140,7 +56,7 @@ class Coordinate
      */
     public function getLongitude(): float
     {
-        return $this->getLongitudeDD();
+        return $this->getLongitudeDecimal();
     }
 
     /**
@@ -148,7 +64,7 @@ class Coordinate
      *
      * @return float
      */
-    public function getLatitudeDD(): float
+    public function getLatitudeDecimal(): float
     {
         return $this->latitude->getDecimal();
     }
@@ -158,7 +74,7 @@ class Coordinate
      *
      * @return float
      */
-    public function getLongitudeDD(): float
+    public function getLongitudeDecimal(): float
     {
         return $this->longitude->getDecimal();
     }
@@ -185,5 +101,40 @@ class Coordinate
     public function getLongitudeDMS(string $format = BaseCoordinateValue::FORMAT_DMS_SHORT_1): string
     {
         return $this->longitude->getDms($format);
+    }
+
+    /**
+     * Returns the WGS84 distance in meters.
+     *
+     * @param Coordinate $coordinate
+     * @param string $returnValue
+     * @return float
+     * @throws CaseUnsupportedException
+     */
+    public function getDistance(Coordinate $coordinate, string $returnValue = self::RETURN_METERS): float
+    {
+        /* Conversion of latitude and longitude in radians. */
+        $longitudeRadianStart = deg2rad($this->longitude->getDecimal());
+        $latitudeRadianStart = deg2rad($this->latitude->getDecimal());
+
+        $longitudeRadianEnd = deg2rad($coordinate->getLongitudeDecimal());
+        $latitudeRadianEnd = deg2rad($coordinate->getLatitudeDecimal());
+
+        /* Differences of latitudes and longitudes. */
+        $longitudeDelta = $longitudeRadianEnd - $longitudeRadianStart;
+        $latitudeDelta = $latitudeRadianEnd - $latitudeRadianStart;
+
+        /* Haversine formula: https://en.wikipedia.org/wiki/Haversine_formula */
+        $asinSqrt = sin($latitudeDelta / 2) ** 2 +
+            sin($longitudeDelta / 2) ** 2 *
+            cos($latitudeRadianStart) * cos($latitudeRadianEnd);
+
+        $distance = 2 * self::EARTH_RADIUS_METER * asin(sqrt($asinSqrt));
+
+        return match ($returnValue) {
+            self::RETURN_METERS => round($distance, self::PRECISION_METERS),
+            self::RETURN_KILOMETERS => round($distance / 1000, self::PRECISION_KILOMETERS),
+            default => throw new CaseUnsupportedException(sprintf('The given return value "%s" is not supported.', $returnValue)),
+        };
     }
 }

@@ -14,25 +14,48 @@
 > This library offers a collection of various PHP coordinate classes like Coordinate, etc.
 > It converts various coordinate strings and values into a unique format.
 
-## 1. Installation
-
-```bash
-composer require ixnode/php-coordinate
-```
-
-```bash
-vendor/bin/php-coordinate -V
-```
-
-```bash
-php-coordinate 0.1.0 (03-07-2023 01:17:26) - Björn Hempel <bjoern@hempel.li>
-```
-
-## 2. Usage
+## 1. Usage
 
 ```php
 use Ixnode\PhpCoordinate\Coordinate;
 ```
+
+### 1.1 Simple example
+
+```php
+$coordinate = new Coordinate(51.0504, 13.7373);
+
+print $coordinate->getLatitudeDMS();
+// (string) 51°3′1.44″N
+
+print $coordinate->getLongitudeDMS();
+// (string) 13°44′14.28″E
+```
+
+### 1.2 Parser example
+
+```php
+$coordinate = new Coordinate('51°3′1.44″N 13°44′14.28″E');
+
+print $coordinate->getLatitude();
+// (float) 51.0504
+
+print $coordinate->getLongitude();
+// (float) 13.7373
+```
+
+### 1.3 Distance example
+
+```php
+$coordinateDresden = new Coordinate('51°3′1.44″N 13°44′14.28″E');
+$coordinateCordoba = new Coordinate(-31.425299, -64.201743);
+
+/* Distance between Dresden, Germany and Córdoba, Argentina */
+print $coordinate->getDistance($coordinateCordoba, Coordinate::RETURN_KILOMETERS);
+// (float) 11904.668
+```
+
+## 2. Parser
 
 ### 2.1 Parser
 
@@ -53,10 +76,10 @@ use Ixnode\PhpCoordinate\Coordinate;
 ```php
 $coordinate = new Coordinate('51.0504 13.7373');
 
-$latitude = $coordinate->getLatitude();
+print $coordinate->getLatitude();
 // (float) 51.0504
 
-$longitude = $coordinate->getLongitude();
+print $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
@@ -77,10 +100,10 @@ $longitude = $coordinate->getLongitude();
 ```php
 $coordinate = new Coordinate('51°3′1.44″N 13°44′14.28″E');
 
-$latitude = $coordinate->getLatitude();
+print $coordinate->getLatitude();
 // (float) 51.0504
 
-$longitude = $coordinate->getLongitude();
+print $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
@@ -101,41 +124,56 @@ $longitude = $coordinate->getLongitude();
 ```php
 $coordinate = new Coordinate('https://maps.app.goo.gl/PHq5axBaDdgRWj4T6');
 
-$latitude = $coordinate->getLatitude();
+print $coordinate->getLatitude();
 // (float) 54.07304830
 
-$longitude = $coordinate->getLongitude();
+print $coordinate->getLongitude();
 // (float) 18.992402
 ```
 
 ### 2.2 Converter
 
-#### 2.2.1 Methods
+#### 2.2.1 Methods of class `Coordinate`
 
-| Method            | Type     | Parameter                             | Description                                                 | Example             |
-|-------------------|----------|---------------------------------------|-------------------------------------------------------------|---------------------|
-| `getLatitude`     | _float_  | ---                                   | Returns the decimal degree presentation of latitude value.  | _-31.425299_        |
-| `getLongitude`    | _float_  | ---                                   | Returns the decimal degree presentation of longitude value. | _-64.201743_        |
-| `getLatitudeDD`   | _float_  | ---                                   | Alias of `getLatitude`.                                     | _-31.425299_        |
-| `getLongitudeDD`  | _float_  | ---                                   | Alias of `getLongitude`.                                    | _-64.201743_        |
-| `getLatitudeDMS`  | _string_ | ---                                   | Returns the dms representation of the latitude value.       | `"31°25′31.0764″S"` |
-| `getLongitudeDMS` | _string_ | ---                                   | Returns the dms representation of the longitude value.      | `"64°12′6.2748″W"`  |
-| `getLatitudeDMS`  | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2` | Returns the dms representation of the latitude value (v2).  | `"S31°25′31.0764″"` |
-| `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2` | Returns the dms representation of the longitude value (v2). | `"W64°12′6.2748″"`  |
+| Method            | Type     | Parameter                                              | Description                                                 | Example             |
+|-------------------|----------|--------------------------------------------------------|-------------------------------------------------------------|---------------------|
+| `getLatitude`     | _float_  | ---                                                    | Returns the decimal degree presentation of latitude value.  | _-31.425299_        |
+| `getLongitude`    | _float_  | ---                                                    | Returns the decimal degree presentation of longitude value. | _-64.201743_        |
+| `getLatitudeDD`   | _float_  | ---                                                    | Alias of `getLatitude`.                                     | _-31.425299_        |
+| `getLongitudeDD`  | _float_  | ---                                                    | Alias of `getLongitude`.                                    | _-64.201743_        |
+| `getLatitudeDMS`  | _string_ | ---                                                    | Returns the dms representation of the latitude value.       | `"31°25′31.0764″S"` |
+| `getLongitudeDMS` | _string_ | ---                                                    | Returns the dms representation of the longitude value.      | `"64°12′6.2748″W"`  |
+| `getLatitudeDMS`  | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the latitude value (v2).  | `"S31°25′31.0764″"` |
+| `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the longitude value (v2). | `"W64°12′6.2748″"`  |
+| `getDistance`     | _float_  | `new Coordinate()`, `meters` (default) or `kilometers` | Returns the distance to given second Coordinate instance.   | `11904.668`         |
 
 #### 2.2.2 Code example
 
 ```php
 $coordinate = new Coordinate('-31.425299, -64.201743');
 
-$latitude = $coordinate->getLatitudeDMS();
+print $coordinate->getLatitudeDMS();
 // (string) "31°25′31.0764″S"
 
-$longitude = $coordinate->getLongitudeDMS();
+print $coordinate->getLongitudeDMS();
 // (string) "64°12′6.2748″W"
 ```
 
-## 3. Library development
+## 3. Installation
+
+```bash
+composer require ixnode/php-coordinate
+```
+
+```bash
+vendor/bin/php-coordinate -V
+```
+
+```bash
+php-coordinate 0.1.0 (03-07-2023 01:17:26) - Björn Hempel <bjoern@hempel.li>
+```
+
+## 4. Library development
 
 ```bash
 git clone git@github.com:ixnode/php-coordinate.git && cd php-coordinate
