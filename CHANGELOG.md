@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.4] - 2023-07-22
+
+* Composer update
+* Upgrading friendsofphp/php-cs-fixer (v3.21.1 => v3.22.0)
+* Upgrading phpstan/phpstan (1.10.25 => 1.10.26)
+* Upgrading povils/phpmnd (v3.1.0 => v3.2.0)
+
 ### [0.1.3] - 2023-07-22
 
 * Possibility to specify float numbers in the Coordinate class
