@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.3] - 2023-07-22
+
+* Possibility to specify float numbers in the Coordinate class
+
 ### [0.1.2] - 2023-07-10
 
 * Add DMS parser
