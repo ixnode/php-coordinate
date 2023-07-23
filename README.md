@@ -57,11 +57,9 @@ print $coordinate->getDistance($coordinateCordoba, Coordinate::RETURN_KILOMETERS
 
 ## 2. Parser
 
-### 2.1 Parser
+### 2.1 Basic decimal degree parser
 
-#### 2.1.1 Basic decimal degree parser
-
-##### 2.1.1.1 Parser formats
+#### 2.1.1 Parser formats
 
 | Given value (string)              | Latitude (float) | Longitude (float) | Place              |
 |-----------------------------------|------------------|-------------------|--------------------|
@@ -71,7 +69,7 @@ print $coordinate->getDistance($coordinateCordoba, Coordinate::RETURN_KILOMETERS
 | `"POINT(-31.425299, -64.201743)"` | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
 | `"POINT(-31.425299 -64.201743)"`  | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
 
-##### 2.1.1.2 Code example
+#### 2.1.2 Code example
 
 ```php
 $coordinate = new Coordinate('51.0504 13.7373');
@@ -83,9 +81,9 @@ print $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
-#### 2.1.2 Basic DMS Parser
+### 2.2 Basic DMS Parser
 
-##### 2.1.2.1 Parser formats
+#### 2.2.1 Parser formats
 
 | Given value (string)                       | Latitude (float) | Longitude (float) | Place              |
 |--------------------------------------------|------------------|-------------------|--------------------|
@@ -95,7 +93,7 @@ print $coordinate->getLongitude();
 | `"POINT(31°25′31.0764″S, 64°12′6.2748″W)"` | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
 | `"POINT(31°25′31.0764″S 64°12′6.2748″W)"`  | _-31.425299_     | _-64.201743_      | Córdoba, Argentina |
 
-##### 2.1.2.2 Code example
+#### 2.2.2 Code example
 
 ```php
 $coordinate = new Coordinate('51°3′1.44″N 13°44′14.28″E');
@@ -107,9 +105,9 @@ print $coordinate->getLongitude();
 // (float) 13.7373
 ```
 
-#### 2.1.3 Google Url Parser Parser
+### 2.3 Google Url Parser Parser
 
-##### 2.1.3.1 Parser formats
+#### 2.3.1 Parser formats
 
 | Given value (string)                                   | Latitude (float) | Longitude (float) | Place            |
 |--------------------------------------------------------|------------------|-------------------|------------------|
@@ -119,7 +117,7 @@ print $coordinate->getLongitude();
 * <sup><code>1)</code></sup> [Copied Google Maps Short Url](https://maps.app.goo.gl/PHq5axBaDdgRWj4T6)
 * <sup><code>2)</code></sup> [Copied Google Maps Link](https://www.google.com/maps/place/V%C3%B6lkerschlachtdenkmal,+04277+Leipzig/@51.3123709,12.4132924,17z/data=!3m1!4b1!4m6!3m5!1s0x47a6f9a9d013ca23:0x277b49a142da988c!8m2!3d51.3123709!4d12.4132924!16s%2Fg%2F12ls2f87w?entry=ttu)
 
-##### 2.1.3.2 Code example
+#### 2.3.2 Code example
 
 ```php
 $coordinate = new Coordinate('https://maps.app.goo.gl/PHq5axBaDdgRWj4T6');
@@ -131,9 +129,9 @@ print $coordinate->getLongitude();
 // (float) 18.992402
 ```
 
-### 2.2 Converter
+## 3. Converter
 
-#### 2.2.1 Methods of class `Coordinate`
+### 3.1 Methods of class `Coordinate`
 
 | Method            | Type     | Parameter                                              | Description                                                 | Example             |
 |-------------------|----------|--------------------------------------------------------|-------------------------------------------------------------|---------------------|
@@ -147,7 +145,7 @@ print $coordinate->getLongitude();
 | `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the longitude value (v2). | `"W64°12′6.2748″"`  |
 | `getDistance`     | _float_  | `new Coordinate()`, `meters` (default) or `kilometers` | Returns the distance to given second Coordinate instance.   | `11904.668`         |
 
-#### 2.2.2 Code example
+### 3.2 Code example
 
 ```php
 $coordinate = new Coordinate('-31.425299, -64.201743');
@@ -159,7 +157,7 @@ print $coordinate->getLongitudeDMS();
 // (string) "64°12′6.2748″W"
 ```
 
-## 3. Installation
+## 4. Installation
 
 ```bash
 composer require ixnode/php-coordinate
@@ -173,7 +171,7 @@ vendor/bin/php-coordinate -V
 php-coordinate 0.1.0 (03-07-2023 01:17:26) - Björn Hempel <bjoern@hempel.li>
 ```
 
-## 4. Library development
+## 5. Library development
 
 ```bash
 git clone git@github.com:ixnode/php-coordinate.git && cd php-coordinate
@@ -187,6 +185,6 @@ composer install
 composer test
 ```
 
-## 4. License
+## 6. License
 
 This library is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
