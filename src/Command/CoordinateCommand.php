@@ -187,7 +187,16 @@ class CoordinateCommand extends Command
         $this->printDistance($coordinateSourceEntity, $coordinateTargetEntity, 'Distance');
         $this->writer->write(PHP_EOL);
 
-        $image = new Image2Ascii(new File('docs/image/world-map.png'));
+        $path = 'docs/image/world-map.png';
+
+        $file = new File($path);
+
+        if (!$file->exist()) {
+            $path = sprintf('vendor/ixnode/php-coordinate/%s', $path);
+            $file = new File($path);
+        }
+
+        $image = new Image2Ascii($file);
 
         $this->writer->write($image->getAscii(120, [
             '#ff0000' => $coordinateTargetEntity,
