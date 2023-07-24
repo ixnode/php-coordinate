@@ -47,6 +47,10 @@ abstract class BaseCoordinateValue
 
     final public const FORMAT_DMS_SHORT_2 = '%s%d°%d′%s″';
 
+    final public const FORMAT_DMS_SHORT_3 = '%dd %d\' %s\'\' %s';
+
+    final public const FORMAT_DMS_SHORT_4 = '%s %dd %d\' %s\'\'';
+
     final public const TYPE_LATITUDE = 'latitude';
 
     final public const TYPE_LONGITUDE = 'longitude';
@@ -197,8 +201,8 @@ abstract class BaseCoordinateValue
     public function getDms(string $format = self::FORMAT_DMS_SHORT_1): string
     {
         return match ($format) {
-            self::FORMAT_DMS_SHORT_1 => sprintf($format, $this->getDegree(), $this->getMinutes(), $this->getSeconds(), $this->getDirection()),
-            self::FORMAT_DMS_SHORT_2 => sprintf($format, $this->getDirection(), $this->getDegree(), $this->getMinutes(), $this->getSeconds()),
+            self::FORMAT_DMS_SHORT_1, self::FORMAT_DMS_SHORT_3 => sprintf($format, $this->getDegree(), $this->getMinutes(), $this->getSeconds(), $this->getDirection()),
+            self::FORMAT_DMS_SHORT_2, self::FORMAT_DMS_SHORT_4 => sprintf($format, $this->getDirection(), $this->getDegree(), $this->getMinutes(), $this->getSeconds()),
             default => throw new CaseUnsupportedException(sprintf('Unknown format "%s" given.', $format)),
         };
     }

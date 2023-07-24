@@ -24,7 +24,9 @@
   "require": {
     "php": "^8.2",
     "ext-curl": "*",
-    "ixnode/php-exception": "^0.1.21"
+    "ext-gd": "*",
+    "ixnode/php-exception": "^0.1.21",
+    "adhocore/cli": "^v1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",

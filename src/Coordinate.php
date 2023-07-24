@@ -28,6 +28,8 @@ use Ixnode\PhpException\Case\CaseUnsupportedException;
  */
 class Coordinate extends BaseCoordinate
 {
+    protected const DEGREE_PRECISION = 2;
+
     protected const PRECISION_METERS = 1;
 
     protected const PRECISION_KILOMETERS = 3;
@@ -38,6 +40,22 @@ class Coordinate extends BaseCoordinate
 
     /* WGS84 */
     final public const EARTH_RADIUS_METER = 6_371_000;
+
+    final public const ANGLE_360_0 = 360.;
+
+    final public const ANGLE_180_0 = 180.;
+
+    final public const ANGLE_157_5 = 157.5;
+
+    final public const ANGLE_112_5 = 112.5;
+
+    final public const ANGLE_90_0 = 90.;
+
+    final public const ANGLE_67_5 = 67.5;
+
+    final public const ANGLE_22_5 = 22.5;
+
+    final public const ANGLE_0_0 = 0.;
 
     /**
      * Returns the latitude of given coordinate.
@@ -106,19 +124,19 @@ class Coordinate extends BaseCoordinate
     /**
      * Returns the WGS84 distance in meters.
      *
-     * @param Coordinate $coordinate
+     * @param Coordinate $coordinateTarget
      * @param string $returnValue
      * @return float
      * @throws CaseUnsupportedException
      */
-    public function getDistance(Coordinate $coordinate, string $returnValue = self::RETURN_METERS): float
+    public function getDistance(Coordinate $coordinateTarget, string $returnValue = self::RETURN_METERS): float
     {
         /* Conversion of latitude and longitude in radians. */
         $longitudeRadianStart = deg2rad($this->longitude->getDecimal());
         $latitudeRadianStart = deg2rad($this->latitude->getDecimal());
 
-        $longitudeRadianEnd = deg2rad($coordinate->getLongitudeDecimal());
-        $latitudeRadianEnd = deg2rad($coordinate->getLatitudeDecimal());
+        $longitudeRadianEnd = deg2rad($coordinateTarget->getLongitudeDecimal());
+        $latitudeRadianEnd = deg2rad($coordinateTarget->getLatitudeDecimal());
 
         /* Differences of latitudes and longitudes. */
         $longitudeDelta = $longitudeRadianEnd - $longitudeRadianStart;
@@ -135,6 +153,67 @@ class Coordinate extends BaseCoordinate
             self::RETURN_METERS => round($distance, self::PRECISION_METERS),
             self::RETURN_KILOMETERS => round($distance / 1000, self::PRECISION_KILOMETERS),
             default => throw new CaseUnsupportedException(sprintf('The given return value "%s" is not supported.', $returnValue)),
+        };
+    }
+
+
+    /**
+     * Returns the degree between two coordinates.
+     *
+     * @param Coordinate $coordinateTarget
+     * @return float
+     */
+    public function getDegree(Coordinate $coordinateTarget): float
+    {
+        if ($this->getLatitude() === $coordinateTarget->getLatitude() && $this->getLongitude() === $coordinateTarget->getLongitude()) {
+            return round(.0, self::DEGREE_PRECISION);
+        }
+
+        $latitudeDelta = $coordinateTarget->getLatitude() - $this->getLatitude();
+        $longitudeDelta = $coordinateTarget->getLongitude() - $this->getLongitude();
+
+        $rad = atan2($latitudeDelta, $longitudeDelta);
+
+        $degree = -1 * $rad * (self::ANGLE_180_0 / pi());
+
+        $degree += self::ANGLE_90_0;
+
+        $degree -= $degree > self::ANGLE_180_0 ? self::ANGLE_360_0 : self::ANGLE_0_0;
+
+        return round($degree, self::DEGREE_PRECISION);
+    }
+
+
+    /**
+     * Gets direction from two coordinates.
+     *
+     * @param Coordinate $coordinateTarget
+     * @return string
+     * @throws CaseUnsupportedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function getDirection(Coordinate $coordinateTarget): string
+    {
+        $degree = $this->getDegree($coordinateTarget);
+
+        if ($degree > self::ANGLE_180_0) {
+            throw new CaseUnsupportedException(sprintf('Unexpected angle given 1 "%.2f" (%s:%d).', $degree, __FILE__, __LINE__));
+        }
+
+        if ($degree < -self::ANGLE_180_0) {
+            throw new CaseUnsupportedException(sprintf('Unexpected angle given 2 "%.2f" (%s:%d).', $degree, __FILE__, __LINE__));
+        }
+
+        return match (true) {
+            $degree >= -self::ANGLE_22_5 && $degree < self::ANGLE_22_5 => 'N',
+            $degree >= self::ANGLE_22_5 && $degree < self::ANGLE_67_5 => 'NE',
+            $degree >= self::ANGLE_67_5 && $degree < self::ANGLE_112_5 => 'E',
+            $degree >= self::ANGLE_112_5 && $degree < self::ANGLE_157_5 => 'SE',
+            $degree >= self::ANGLE_157_5 || $degree < -self::ANGLE_157_5 => 'S',
+            $degree >= -self::ANGLE_157_5 && $degree < -self::ANGLE_112_5 => 'SW',
+            $degree >= -self::ANGLE_112_5 && $degree < -self::ANGLE_67_5 => 'W',
+            $degree >= -self::ANGLE_67_5 && $degree < -self::ANGLE_22_5 => 'NW',
+            default => throw new CaseUnsupportedException(sprintf('Unexpected angle given 3 "%.2f" (%s:%d).', $degree, __FILE__, __LINE__)),
         };
     }
 }

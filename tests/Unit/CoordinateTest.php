@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ixnode\PhpCoordinate\Tests\Unit;
 
 use Ixnode\PhpCoordinate\Base\BaseCoordinateValue;
+use Ixnode\PhpCoordinate\Constants\Direction;
 use Ixnode\PhpCoordinate\Coordinate;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 use Ixnode\PhpException\Parser\ParserException;
@@ -32,12 +33,14 @@ final class CoordinateTest extends TestCase
     /**
      * Test wrapper.
      *
-     * @dataProvider dataProviderGetDistance
      * @dataProvider dataProviderDecimalDegreeGivenByFloatValues
      * @dataProvider dataProviderDecimalDegreeGivenByStringValues
      * @dataProvider dataProviderDecimalDegreeGivenBySingleString
      * @dataProvider dataProviderGetLatitudeDMSv1
      * @dataProvider dataProviderGetLatitudeDMSv2
+     * @dataProvider dataProviderGetDistance
+     * @dataProvider dataProviderGetDegree
+     * @dataProvider dataProviderGetDirection
      *
      * @test
      * @testdox $number) Test Coordinate: $method from "$given"
@@ -314,6 +317,54 @@ final class CoordinateTest extends TestCase
             [++$number, 'getDistance', new Coordinate(51.0504, 13.7373), Coordinate::RETURN_KILOMETERS, -33.940525, 18.414006, 9461.664], // Kapstadt, South Africa
             [++$number, 'getDistance', new Coordinate(51.0504, 13.7373), Coordinate::RETURN_KILOMETERS, 40.690069, -74.045508, 6482.638], // New York, United States
             [++$number, 'getDistance', new Coordinate(51.0504, 13.7373), Coordinate::RETURN_KILOMETERS, -31.425299, -64.201743, 11904.668], // Córdoba, Argentina
+
+        ];
+    }
+
+    /**
+     * Data provider (test getDegree method).
+     *
+     * @return array<int, array<int, string|int|float|Coordinate|null>>
+     * @throws CaseUnsupportedException
+     * @throws ParserException
+     */
+    public function dataProviderGetDegree(): array
+    {
+        $number = 0;
+
+        return [
+
+            /**
+             * getDegree (converter check)
+             */
+            [++$number, 'getDegree', new Coordinate(51.0504, 13.7373), null, 51.0504, 13.7373, .0], // Dresden, Germany
+            [++$number, 'getDegree', new Coordinate(-33.940525, 18.414006), null, 51.0504, 13.7373, 176.85], // Kapstadt, South Africa
+            [++$number, 'getDegree', new Coordinate(40.690069, -74.045508), null, 51.0504, 13.7373, -96.73], // New York, United States
+            [++$number, 'getDegree', new Coordinate(-31.425299, -64.201743), null, 51.0504, 13.7373, -136.62], // Córdoba, Argentina
+
+        ];
+    }
+
+    /**
+     * Data provider (test getDegree method).
+     *
+     * @return array<int, array<int, string|int|float|Coordinate|null>>
+     * @throws CaseUnsupportedException
+     * @throws ParserException
+     */
+    public function dataProviderGetDirection(): array
+    {
+        $number = 0;
+
+        return [
+
+            /**
+             * getDirection (converter check)
+             */
+            [++$number, 'getDirection', new Coordinate(51.0504, 13.7373), null, 51.0504, 13.7373, Direction::DIRECTION_NORTH], // Dresden, Germany
+            [++$number, 'getDirection', new Coordinate(-33.940525, 18.414006), null, 51.0504, 13.7373, Direction::DIRECTION_SOUTH], // Kapstadt, South Africa
+            [++$number, 'getDirection', new Coordinate(40.690069, -74.045508), null, 51.0504, 13.7373, Direction::DIRECTION_WEST], // New York, United States
+            [++$number, 'getDirection', new Coordinate(-31.425299, -64.201743), null, 51.0504, 13.7373, Direction::DIRECTION_SOUTH_WEST], // Córdoba, Argentina
 
         ];
     }
