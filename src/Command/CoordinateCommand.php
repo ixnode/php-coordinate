@@ -155,6 +155,93 @@ class CoordinateCommand extends Command
     }
 
     /**
+     * Gets the cardinal direction.
+     *
+     * @return array<int, string>
+     */
+    private function getCardinalDirection(): array
+    {
+        $string = [];
+
+        $string[] = '+------------------------------------+';
+        $string[] = '|         Cardinal direction         |';
+        $string[] = '+------------------------------------|';
+        $string[] = '|                                    |';
+        $string[] = '|                  0°                |';
+        $string[] = '|                                    |';
+        $string[] = '|                 ___                |';
+        $string[] = '|    -45°         ───        45°     |';
+        $string[] = '|          //      N      \\\\         |';
+        $string[] = '|             NW       NE            |';
+        $string[] = '|                  |                 |';
+        $string[] = '|  -90°  || W    --+--    E ||  90°  |';
+        $string[] = '|                  |                 |';
+        $string[] = '|             SW       SE            |';
+        $string[] = '|          \\\\      S      //         |';
+        $string[] = '|    -135°        ───        135°    |';
+        $string[] = '|                 ‾‾‾                |';
+        $string[] = '|                                    |';
+        $string[] = '|                 180°               |';
+        $string[] = '|                                    |';
+        $string[] = '+------------------------------------+';
+
+        return $string;
+    }
+
+    /**
+     * Gets the longitude and latitude description.
+     *
+     * @return array<int, string>
+     */
+    private function getLongitudeLatitude(): array
+    {
+        $string = [];
+
+        $string[] = '+------------------------------------------+';
+        $string[] = '|           Longitude / Langitude          |';
+        $string[] = '+------------------------------------------|';
+        $string[] = '|              y                           |';
+        $string[] = '|                                          |';
+        $string[] = '|          90° ⯅                           |';
+        $string[] = '|              |                           |';
+        $string[] = '|            L |                           |';
+        $string[] = '|            a |                           |';
+        $string[] = '|            t |                           |';
+        $string[] = '|            i |                           |';
+        $string[] = '|            t |                           |';
+        $string[] = '|            u |                           |';
+        $string[] = '|            d |                           |';
+        $string[] = '|            e | Greenwich                 |';
+        $string[] = '|      ⯇-------+---------------------⯈  x  |';
+        $string[] = '| -180°        | Longitude            180° |';
+        $string[] = '|              |                           |';
+        $string[] = '|              |                           |';
+        $string[] = '|         -90° ⯆                           |';
+        $string[] = '+------------------------------------------+';
+
+        return $string;
+    }
+
+    /**
+     * Merge strings.
+     *
+     * @param array<int, string> $strings1
+     * @param array<int, string> $strings2
+     * @return array<int, string>
+     */
+    private function mergeStrings(array $strings1, array $strings2): array
+    {
+        $string = [];
+
+        foreach ($strings1 as $number => $string1) {
+            $string2 = array_key_exists($number, $strings2) ? $strings2[$number] : '';
+            $string[] = $string1.'   '.$string2;
+        }
+
+        return $string;
+    }
+
+    /**
      * Executes the ParserCommand.
      *
      * @return int
@@ -201,11 +288,19 @@ class CoordinateCommand extends Command
         $this->writer->write($image->getAscii(120, [
             '#ff0000' => $coordinateTargetEntity,
             '#00ff00' => $coordinateSourceEntity,
-//            '#0000ff' => new Coordinate(-31.425299, -64.201743),
-//            '#008080' => new Coordinate(35.685110, 139.749930),
-//            '#800080' => new Coordinate(40.715551, -74.004649),
-//            '#808000' => new Coordinate(-33.873941, 151.275790),
         ]));
+        $this->writer->write(PHP_EOL);
+
+        $this->writer->write(PHP_EOL);
+        $this->writer->write(
+            implode(
+                PHP_EOL,
+                $this->mergeStrings(
+                    $this->getCardinalDirection(),
+                    $this->getLongitudeLatitude()
+                )
+            )
+        );
         $this->writer->write(PHP_EOL);
         $this->writer->write(PHP_EOL);
 
