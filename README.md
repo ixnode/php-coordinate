@@ -155,17 +155,19 @@ print $coordinate->getLongitude();
 
 ### 3.1 Methods of class `Coordinate`
 
-| Method            | Type     | Parameter                                              | Description                                                 | Example             |
-|-------------------|----------|--------------------------------------------------------|-------------------------------------------------------------|---------------------|
-| `getLatitude`     | _float_  | ---                                                    | Returns the decimal degree presentation of latitude value.  | _-31.425299_        |
-| `getLongitude`    | _float_  | ---                                                    | Returns the decimal degree presentation of longitude value. | _-64.201743_        |
-| `getLatitudeDD`   | _float_  | ---                                                    | Alias of `getLatitude`.                                     | _-31.425299_        |
-| `getLongitudeDD`  | _float_  | ---                                                    | Alias of `getLongitude`.                                    | _-64.201743_        |
-| `getLatitudeDMS`  | _string_ | ---                                                    | Returns the dms representation of the latitude value.       | `"31°25′31.0764″S"` |
-| `getLongitudeDMS` | _string_ | ---                                                    | Returns the dms representation of the longitude value.      | `"64°12′6.2748″W"`  |
-| `getLatitudeDMS`  | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the latitude value (v2).  | `"S31°25′31.0764″"` |
-| `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the longitude value (v2). | `"W64°12′6.2748″"`  |
-| `getDistance`     | _float_  | `new Coordinate()`, `meters` (default) or `kilometers` | Returns the distance to given second Coordinate instance.   | `11904.668`         |
+| Method            | Type     | Parameter                                              | Description                                                                                                      | Example             |
+|-------------------|----------|--------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------|
+| `getLatitude`     | _float_  | ---                                                    | Returns the decimal degree presentation of latitude value.                                                       | _-31.425299_        |
+| `getLongitude`    | _float_  | ---                                                    | Returns the decimal degree presentation of longitude value.                                                      | _-64.201743_        |
+| `getLatitudeDD`   | _float_  | ---                                                    | Alias of `getLatitude`.                                                                                          | _-31.425299_        |
+| `getLongitudeDD`  | _float_  | ---                                                    | Alias of `getLongitude`.                                                                                         | _-64.201743_        |
+| `getLatitudeDMS`  | _string_ | ---                                                    | Returns the dms representation of the latitude value.                                                            | `"31°25′31.0764″S"` |
+| `getLongitudeDMS` | _string_ | ---                                                    | Returns the dms representation of the longitude value.                                                           | `"64°12′6.2748″W"`  |
+| `getLatitudeDMS`  | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the latitude value (v2).                                                       | `"S31°25′31.0764″"` |
+| `getLongitudeDMS` | _string_ | `CoordinateValue::FORMAT_DMS_SHORT_2`                  | Returns the dms representation of the longitude value (v2).                                                      | `"W64°12′6.2748″"`  |
+| `getDistance`     | _float_  | `new Coordinate()`, `meters` (default) or `kilometers` | Returns the distance to given second Coordinate instance.                                                        | `11904.668`         |
+| `getDegree`       | _float_  | `new Coordinate()`                                     | Returns the direction (degree) to given second Coordinate instance (0° - North, 90° - East, etc.).               | `-136.62`           |
+| `getDirection`    | _string_ | `new Coordinate()`                                     | Returns the cardinal direction to given second Coordinate instance (`N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`). | `SW`                |
 
 ### 3.2 Code example
 
