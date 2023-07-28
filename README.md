@@ -155,7 +155,7 @@ print $coordinate->getLongitude();
 
 ### 3.1 Methods of class `Coordinate`
 
-| Method            | Type     | Parameter                                              | Description                                                                                                      | Example             |
+| Method            | Type     | Parameter(s)                                           | Description                                                                                                      | Example             |
 |-------------------|----------|--------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------|
 | `getLatitude`     | _float_  | ---                                                    | Returns the decimal degree presentation of latitude value.                                                       | _-31.425299_        |
 | `getLongitude`    | _float_  | ---                                                    | Returns the decimal degree presentation of longitude value.                                                      | _-64.201743_        |
