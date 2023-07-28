@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.12] - 2023-07-28
+
+* Update README.md
+
 ### [0.1.11] - 2023-07-28
 
 * Add cardinal direction and longitude and latitude to screen
