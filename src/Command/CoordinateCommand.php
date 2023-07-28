@@ -222,7 +222,7 @@ class CoordinateCommand extends Command
         $string = [];
 
         $string[] = '+---------------------------------------+';
-        $string[] = sprintf('|         %s         |', $this->green('Longitude / Langitude'));
+        $string[] = sprintf('|         %s          |', $this->green('Longitude / Latitude'));
         $string[] = '+---------------------------------------|';
         $string[] = '|          '.$this->blue('lat').'                          |';
         $string[] = '|                                       |';
