@@ -175,10 +175,16 @@ php-coordinate 0.1.0 (03-07-2023 01:17:26) - Björn Hempel <bjoern@hempel.li>
 
 > Used to quickly check two given coordinates.
 
-Check Dresden, Germany and New York, United States:
+Check _Dresden, Germany_ and _New York, United States_:
 
 ```bash
 bin/console pc "51°3′1.44″N, 13°44′14.28″E" "40.712784, -74.005941"
+```
+
+or within your composer project:
+
+```bash
+vendor/bin/php-coordinate pc "51°3′1.44″N, 13°44′14.28″E" "40.712784, -74.005941"
 ```
 
 ```bash
