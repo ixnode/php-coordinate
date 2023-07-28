@@ -155,6 +155,30 @@ class CoordinateCommand extends Command
     }
 
     /**
+     * Returns a green string.
+     *
+     * @param string $string
+     * @return string
+     */
+    private function green(string $string): string
+    {
+        $color = new Color();
+        return $color->ok($string);
+    }
+
+    /**
+     * Returns a blue string.
+     *
+     * @param string $string
+     * @return string
+     */
+    private function blue(string $string): string
+    {
+        $color = new Color();
+        return $color->info($string);
+    }
+
+    /**
      * Gets the cardinal direction.
      *
      * @return array<int, string>
@@ -164,7 +188,7 @@ class CoordinateCommand extends Command
         $string = [];
 
         $string[] = '+------------------------------------+';
-        $string[] = '|         Cardinal direction         |';
+        $string[] = sprintf('|         %s         |', $this->green('Cardinal direction'));
         $string[] = '+------------------------------------|';
         $string[] = '|                                    |';
         $string[] = '|                  0°                |';
@@ -197,27 +221,27 @@ class CoordinateCommand extends Command
     {
         $string = [];
 
-        $string[] = '+------------------------------------------+';
-        $string[] = '|           Longitude / Langitude          |';
-        $string[] = '+------------------------------------------|';
-        $string[] = '|              y                           |';
-        $string[] = '|                                          |';
-        $string[] = '|          90° ⯅                           |';
-        $string[] = '|              |                           |';
-        $string[] = '|            L |                           |';
-        $string[] = '|            a |                           |';
-        $string[] = '|            t |                           |';
-        $string[] = '|            i |                           |';
-        $string[] = '|            t |                           |';
-        $string[] = '|            u |                           |';
-        $string[] = '|            d |                           |';
-        $string[] = '|            e | Greenwich                 |';
-        $string[] = '|      ⯇-------+---------------------⯈  x  |';
-        $string[] = '| -180°        | Longitude            180° |';
-        $string[] = '|              |                           |';
-        $string[] = '|              |                           |';
-        $string[] = '|         -90° ⯆                           |';
-        $string[] = '+------------------------------------------+';
+        $string[] = '+---------------------------------------+';
+        $string[] = sprintf('|         %s         |', $this->green('Longitude / Langitude'));
+        $string[] = '+---------------------------------------|';
+        $string[] = '|          '.$this->blue('lat').'                          |';
+        $string[] = '|                                       |';
+        $string[] = '|       '.$this->blue('90° ⯅').'                           |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').'   • Oslo (59.91°, 10.75°) |';
+        $string[] = '|           '.$this->blue('|').' • London (51.51°, -0.13°) |';
+        $string[] = '|    • New York (40.71°, -74.01°)       |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').' • Null Island (0°, 0°)    |';
+        $string[] = '|   '.$this->blue('⯇-------+-------------------⯈  lon').'  |';
+        $string[] = '|  '.$this->blue('-180°    |                 180°').'      |';
+        $string[] = '|           '.$this->blue('|').'                           |';
+        $string[] = '|           '.$this->blue('|').'       • Cape Agulhas      |';
+        $string[] = '|      '.$this->blue('-90° ⯆').'         (-34.82°, 20.02°) |';
+        $string[] = '+---------------------------------------+';
 
         return $string;
     }
@@ -239,6 +263,32 @@ class CoordinateCommand extends Command
         }
 
         return $string;
+    }
+
+    /**
+     * Returns the image with frame and caption.
+     *
+     * @param array<int, string> $lines
+     * @param int $width
+     * @param string $caption
+     * @return string
+     */
+    private function getAsciiWithFrame(array $lines, int $width, string $caption): string
+    {
+        foreach ($lines as &$line) {
+            $line = sprintf('|%s|', $line);
+        }
+
+        $caption = str_pad($caption, $width,' ', STR_PAD_BOTH);
+
+        $caption = sprintf('|%s|', $this->green($caption));
+
+        $header = sprintf('+%s+', str_repeat('-', $width));
+        $footer = sprintf('+%s+', str_repeat('-', $width));
+
+        $lines = [$header, $caption, $header, ...$lines, $footer];
+
+        return implode(PHP_EOL, $lines);
     }
 
     /**
@@ -285,10 +335,13 @@ class CoordinateCommand extends Command
 
         $image = new Image2Ascii($file);
 
-        $this->writer->write($image->getAscii(120, [
+        $caption = 'World map';
+        $width = 80;
+
+        $this->writer->write($this->getAsciiWithFrame($image->getAsciiLines($width, [
             '#ff0000' => $coordinateTargetEntity,
             '#00ff00' => $coordinateSourceEntity,
-        ]));
+        ]), $width, $caption));
         $this->writer->write(PHP_EOL);
 
         $this->writer->write(PHP_EOL);

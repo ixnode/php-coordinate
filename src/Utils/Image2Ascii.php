@@ -292,24 +292,13 @@ class Image2Ascii
      *
      * @param int $width
      * @param array<string, Coordinate> $points
-     * @return string
+     * @return array<int, string>
      * @throws CaseUnsupportedException
      */
-    public function getAscii(int $width, array $points): string
+    public function getAsciiLines(int $width, array $points): array
     {
         $gdImage = $this->resizeImageGd($this->createGdImageFromGivenPath($this->file->getPath()), $width);
 
-        $lines = $this->convertImageToLines($gdImage, $points);
-
-        foreach ($lines as &$line) {
-            $line = sprintf('|%s|', $line);
-        }
-
-        $header = sprintf('+%s+', str_repeat('-', $width));
-        $footer = sprintf('+%s+', str_repeat('-', $width));
-
-        $lines = [$header, ...$lines, $footer];
-
-        return implode(PHP_EOL, $lines);
+        return $this->convertImageToLines($gdImage, $points);
     }
 }
