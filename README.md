@@ -55,6 +55,28 @@ print $coordinate->getDistance($coordinateCordoba, Coordinate::RETURN_KILOMETERS
 // (float) 11904.668
 ```
 
+### 1.4 Direction example (degree)
+
+```php
+$coordinateDresden = new Coordinate('51°3′1.44″N 13°44′14.28″E');
+$coordinateCordoba = new Coordinate(-31.425299, -64.201743);
+
+/* Direction in degrees from Dresden, Germany to Córdoba, Argentina */
+print $coordinateDresden->getDegree($coordinateCordoba);
+// (float) -136.62°
+```
+
+### 1.5 Direction example (cardinal direction)
+
+```php
+$coordinateDresden = new Coordinate('51°3′1.44″N 13°44′14.28″E');
+$coordinateCordoba = new Coordinate(-31.425299, -64.201743);
+
+/* Direction in degrees from Dresden, Germany to Córdoba, Argentina */
+print $coordinateDresden->getDirection($coordinateCordoba);
+// (string) SW
+```
+
 ## 2. Parser
 
 ### 2.1 Basic decimal degree parser
