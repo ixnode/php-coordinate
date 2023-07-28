@@ -122,6 +122,43 @@ class Coordinate extends BaseCoordinate
     }
 
     /**
+     * Returns the Google string of latitude and longitude (string).
+     *
+     * @param bool $asDms
+     * @return string
+     * @throws CaseUnsupportedException
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
+    public function getLinkGoogle(bool $asDms = false): string
+    {
+        if ($asDms) {
+            return sprintf('https://www.google.de/maps/place/%s+%s', $this->getLatitudeDMS(), $this->getLongitudeDMS());
+        }
+
+        return sprintf('https://www.google.de/maps/place/%f+%f', $this->getLatitude(), $this->getLongitude());
+    }
+
+    /**
+     * Returns the OpenStreetMap link of latitude and longitude (string).
+     *
+     * @param int $zoom
+     * @param string $layers
+     * @return string
+     */
+    public function getLinkOpenStreetMap(int $zoom = 14, string $layers = 'M'): string
+    {
+        return sprintf(
+            'https://www.openstreetmap.org/?lat=%f&lon=%f&mlat=%f&mlon=%f&zoom=%d&layers=%s',
+            $this->getLatitude(),
+            $this->getLongitude(),
+            $this->getLatitude(),
+            $this->getLongitude(),
+            $zoom,
+            $layers
+        );
+    }
+
+    /**
      * Returns the WGS84 distance in meters.
      *
      * @param Coordinate $coordinateTarget

@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
  * @version 0.1.0 (2023-07-10)
  * @since 0.1.0 (2023-07-10) First version.
  * @link Coordinate
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 final class CoordinateTest extends TestCase
 {
@@ -41,12 +42,15 @@ final class CoordinateTest extends TestCase
      * @dataProvider dataProviderGetDistance
      * @dataProvider dataProviderGetDegree
      * @dataProvider dataProviderGetDirection
+     * @dataProvider dataProviderGetLinkGoogle
+     * @dataProvider dataProviderGetLinkGoogleDms
+     * @dataProvider dataProviderGetLinkOpenStreetMap
      *
      * @test
      * @testdox $number) Test Coordinate: $method from "$given"
      * @param int $number
      * @param string $method
-     * @param string|Coordinate|null $parameter1
+     * @param string|Coordinate|bool|null $parameter1
      * @param string|null $parameter2
      * @param string|float $given1
      * @param string|float|null $given2
@@ -57,7 +61,7 @@ final class CoordinateTest extends TestCase
     public function wrapper(
         int $number,
         string $method,
-        string|Coordinate|null $parameter1,
+        string|Coordinate|bool|null $parameter1,
         string|null $parameter2,
         string|float $given1,
         string|float|null $given2,
@@ -365,6 +369,72 @@ final class CoordinateTest extends TestCase
             [++$number, 'getDirection', new Coordinate(-33.940525, 18.414006), null, 51.0504, 13.7373, Direction::DIRECTION_SOUTH], // Kapstadt, South Africa
             [++$number, 'getDirection', new Coordinate(40.690069, -74.045508), null, 51.0504, 13.7373, Direction::DIRECTION_WEST], // New York, United States
             [++$number, 'getDirection', new Coordinate(-31.425299, -64.201743), null, 51.0504, 13.7373, Direction::DIRECTION_SOUTH_WEST], // Córdoba, Argentina
+
+        ];
+    }
+
+    /**
+     * Data provider (test getLinkGoogle method).
+     *
+     * @return array<int, array<int, string|int|float|Coordinate|null>>
+     */
+    public function dataProviderGetLinkGoogle(): array
+    {
+        $number = 0;
+
+        return [
+
+            /**
+             * getLinkGoogle (converter check)
+             */
+            [++$number, 'getLinkGoogle', null, null, 51.0504, 13.7373, 'https://www.google.de/maps/place/51.050400+13.737300'], // Dresden, Germany
+            [++$number, 'getLinkGoogle', null, null, -33.940525, 18.414006, 'https://www.google.de/maps/place/-33.940525+18.414006'], // Kapstadt, South Africa
+            [++$number, 'getLinkGoogle', null, null, 40.690069, -74.045508, 'https://www.google.de/maps/place/40.690069+-74.045508'], // Statue of Liberty, New York, United States
+            [++$number, 'getLinkGoogle', null, null, -31.425299, -64.201743, 'https://www.google.de/maps/place/-31.425299+-64.201743'], // Córdoba, Argentina
+
+        ];
+    }
+
+    /**
+     * Data provider (test getLinkGoogle method).
+     *
+     * @return array<int, array<int, string|int|float|Coordinate|bool|null>>
+     */
+    public function dataProviderGetLinkGoogleDms(): array
+    {
+        $number = 0;
+
+        return [
+
+            /**
+             * getLinkGoogle (converter check)
+             */
+            [++$number, 'getLinkGoogle', true, null, 51.0504, 13.7373, 'https://www.google.de/maps/place/51°3′1.44″N+13°44′14.28″E'], // Dresden, Germany
+            [++$number, 'getLinkGoogle', true, null, -33.940525, 18.414006, 'https://www.google.de/maps/place/33°56′25.89″S+18°24′50.4216″E'], // Kapstadt, South Africa
+            [++$number, 'getLinkGoogle', true, null, 40.690069, -74.045508, 'https://www.google.de/maps/place/40°41′24.2484″N+74°2′43.8288″W'], // Statue of Liberty, New York, United States
+            [++$number, 'getLinkGoogle', true, null, -31.425299, -64.201743, 'https://www.google.de/maps/place/31°25′31.0764″S+64°12′6.2748″W'], // Córdoba, Argentina
+
+        ];
+    }
+
+    /**
+     * Data provider (test getLinkOpenStreetMap method).
+     *
+     * @return array<int, array<int, string|int|float|Coordinate|null>>
+     */
+    public function dataProviderGetLinkOpenStreetMap(): array
+    {
+        $number = 0;
+
+        return [
+
+            /**
+             * getLinkOpenStreetMap (converter check)
+             */
+            [++$number, 'getLinkOpenStreetMap', null, null, 51.0504, 13.7373, 'https://www.openstreetmap.org/?lat=51.050400&lon=13.737300&mlat=51.050400&mlon=13.737300&zoom=14&layers=M'], // Dresden, Germany
+            [++$number, 'getLinkOpenStreetMap', null, null, -33.940525, 18.414006, 'https://www.openstreetmap.org/?lat=-33.940525&lon=18.414006&mlat=-33.940525&mlon=18.414006&zoom=14&layers=M'], // Kapstadt, South Africa
+            [++$number, 'getLinkOpenStreetMap', null, null, 40.690069, -74.045508, 'https://www.openstreetmap.org/?lat=40.690069&lon=-74.045508&mlat=40.690069&mlon=-74.045508&zoom=14&layers=M'], // Statue of Liberty, New York, United States
+            [++$number, 'getLinkOpenStreetMap', null, null, -31.425299, -64.201743, 'https://www.openstreetmap.org/?lat=-31.425299&lon=-64.201743&mlat=-31.425299&mlon=-64.201743&zoom=14&layers=M'], // Córdoba, Argentina
 
         ];
     }
