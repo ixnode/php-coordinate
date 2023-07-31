@@ -88,6 +88,8 @@ abstract class BaseCoordinateParser
 
     protected const VERSION_V2 = 'v2';
 
+    protected string $coordinate;
+
     private ?string $error = null;
 
     /** @var float[]|false|null $parsed */
@@ -97,8 +99,9 @@ abstract class BaseCoordinateParser
      * @param string $coordinate
      * @throws CaseUnsupportedException
      */
-    public function __construct(protected string $coordinate)
+    public function __construct(string $coordinate)
     {
+        $this->coordinate = trim($coordinate);
         $this->parsed = $this->doParse();
     }
 
