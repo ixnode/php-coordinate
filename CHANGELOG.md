@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.14] - 2023-07-31
+
+* Add input trim to input parser
+
 ### [0.1.13] - 2023-07-28
 
 * Add Google and OpenStreetMap links to Coordinate class
