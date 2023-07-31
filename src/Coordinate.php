@@ -122,6 +122,27 @@ class Coordinate extends BaseCoordinate
     }
 
     /**
+     * Returns the string representation of the coordinate.
+     *
+     * @return string
+     */
+    public function getString(): string
+    {
+        return sprintf('%f %f', $this->getLatitude(), $this->getLongitude());
+    }
+
+    /**
+     * Returns the string representation of the coordinate (DMS).
+     *
+     * @return string
+     * @throws CaseUnsupportedException
+     */
+    public function getStringDMS(): string
+    {
+        return sprintf('%s %s', $this->getLatitudeDMS(), $this->getLongitudeDMS());
+    }
+
+    /**
      * Returns the Google string of latitude and longitude (string).
      *
      * @param bool $asDms
@@ -193,7 +214,6 @@ class Coordinate extends BaseCoordinate
         };
     }
 
-
     /**
      * Returns the degree between two coordinates.
      *
@@ -219,7 +239,6 @@ class Coordinate extends BaseCoordinate
 
         return round($degree, self::DEGREE_PRECISION);
     }
-
 
     /**
      * Gets direction from two coordinates.
