@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.15] - 2023-07-31
+
+* Add getString and getStringDMS to Coordinate class
+
 ### [0.1.14] - 2023-07-31
 
 * Add input trim to input parser
