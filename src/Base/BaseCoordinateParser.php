@@ -272,6 +272,8 @@ abstract class BaseCoordinateParser
     protected function convertTimezoneString(array $matches): array
     {
         if (count($matches) !== self::MATCHES_LENGTH_TIMEZONE) {
+            print_r($matches);
+
             throw new CaseUnsupportedException(sprintf(
                 'The given length of matches must be %d.',
                 self::MATCHES_LENGTH_LINK

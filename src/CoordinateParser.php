@@ -47,7 +47,7 @@ class CoordinateParser extends BaseCoordinateParser
                 $this->getPointFromDecimalDegree($matches),
 
             /* Special parser: Timezone parser */
-            preg_match('~([a-z]+/[a-z]+)~i', $this->coordinate, $matches) > 0 =>
+            preg_match('~([a-z]+(?:/[a-z][a-z_]+){1,2})~i', $this->coordinate, $matches) > 0 =>
                 $this->getPointFromDecimalDegree($this->convertTimezoneString($matches)),
 
             default => $this->getPointFromCoordinate(),

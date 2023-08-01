@@ -129,6 +129,8 @@ final class CoordinateParserTest extends TestCase
             [++$number, 'Europe/Berlin', [52.5, 13.36666]], // Berlin, Germany
             [++$number, 'Europe/Oslo', [59.91666, 10.75]], // Oslo, Norway
             [++$number, 'Asia/Tokyo', [35.65444, 139.74472]], // Tokyo, Asia
+            [++$number, 'America/New_York', [40.71416, -74.00638]], // New York, America
+            [++$number, 'America/Argentina/Cordoba', [-31.4, -64.18333]], // Cordoba, South-America
 
         ];
     }
