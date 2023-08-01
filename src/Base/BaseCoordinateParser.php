@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Ixnode\PhpCoordinate\Base;
 
+use DateTimeZone;
+use Exception;
+use Ixnode\PhpException\ArrayType\ArrayKeyNotFoundException;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 
 /**
@@ -55,6 +58,8 @@ abstract class BaseCoordinateParser
     private const MATCHES_LENGTH_DECIMAL = 3;
 
     private const MATCHES_LENGTH_LINK = 2;
+
+    private const MATCHES_LENGTH_TIMEZONE = 2;
 
     protected const DECIMAL_PRECISION = 6;
 
@@ -254,6 +259,51 @@ abstract class BaseCoordinateParser
         }
 
         return $matchesLocation;
+    }
+
+    /**
+     * Gets the matches from given timezone.
+     *
+     * @param array<int, string> $matches
+     * @return string[]
+     * @throws CaseUnsupportedException
+     * @throws Exception
+     */
+    protected function convertTimezoneString(array $matches): array
+    {
+        if (count($matches) !== self::MATCHES_LENGTH_TIMEZONE) {
+            throw new CaseUnsupportedException(sprintf(
+                'The given length of matches must be %d.',
+                self::MATCHES_LENGTH_LINK
+            ));
+        }
+
+        $timezoneString = $matches[0];
+
+        $timezone = new DateTimeZone($timezoneString);
+
+        $location = $timezone->getLocation();
+
+        if ($location === false) {
+            throw new CaseUnsupportedException(sprintf('Unable to parse timezone "%s".', $timezoneString));
+        }
+
+        $latitudeParts = explode('.', (string) $location['latitude']);
+        $longitudeParts = explode('.', (string) $location['longitude']);
+
+        if (count($latitudeParts) < self::MATCHES_LENGTH_TIMEZONE) {
+            $latitudeParts[] = '0';
+        }
+
+        if (count($longitudeParts) < self::MATCHES_LENGTH_TIMEZONE) {
+            $longitudeParts[] = '0';
+        }
+
+        return [
+            $timezoneString,
+            ...$latitudeParts,
+            ...$longitudeParts
+        ];
     }
 
     /**

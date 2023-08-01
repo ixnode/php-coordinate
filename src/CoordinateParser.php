@@ -46,6 +46,10 @@ class CoordinateParser extends BaseCoordinateParser
             preg_match(self::REGEXP_PARSER_GOOGLE_SPOT_LINK, $this->coordinate, $matches) > 0 =>
                 $this->getPointFromDecimalDegree($matches),
 
+            /* Special parser: Timezone parser */
+            preg_match('~([a-z]+/[a-z]+)~i', $this->coordinate, $matches) > 0 =>
+                $this->getPointFromDecimalDegree($this->convertTimezoneString($matches)),
+
             default => $this->getPointFromCoordinate(),
         };
     }

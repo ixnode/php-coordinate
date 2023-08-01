@@ -123,6 +123,13 @@ final class CoordinateParserTest extends TestCase
             [++$number, self::GOOGLE_MAPS_SPOT_LINK_1, [51.31237, 12.413292]], // Leipzig, Germany
             [++$number, self::GOOGLE_MAPS_REDIRECT_LINK_1, [54.073048, 18.992402]], // Malbork, Poland
 
+            /**
+             * datetime parser tests
+             */
+            [++$number, 'Europe/Berlin', [52.5, 13.36666]], // Berlin, Germany
+            [++$number, 'Europe/Oslo', [59.91666, 10.75]], // Oslo, Norway
+            [++$number, 'Asia/Tokyo', [35.65444, 139.74472]], // Tokyo, Asia
+
         ];
     }
 }
