@@ -17,6 +17,7 @@ use Ahc\Cli\Input\Command;
 use Ahc\Cli\Output\Color;
 use Ahc\Cli\Output\Writer;
 use Exception;
+use Ixnode\PhpCliImage\CliImage;
 use Ixnode\PhpContainer\File;
 use Ixnode\PhpCoordinate\Coordinate;
 use Ixnode\PhpCoordinate\Output\Table;
@@ -333,15 +334,14 @@ class CoordinateCommand extends Command
             $file = new File($path);
         }
 
-        $image = new Image2Ascii($file);
-
         $caption = 'World map';
         $width = 80;
 
-        $this->writer->write($this->getAsciiWithFrame($image->getAsciiLines($width, [
-            '#ff0000' => $coordinateTargetEntity,
-            '#00ff00' => $coordinateSourceEntity,
-        ]), $width, $caption));
+        $image = new CliImage($file, $width);
+        $image->addCoordinateSpherical('#ff0000', $coordinateTargetEntity->getLatitude(), $coordinateTargetEntity->getLongitude());
+        $image->addCoordinateSpherical('#00ff00', $coordinateSourceEntity->getLatitude(), $coordinateSourceEntity->getLongitude());
+
+        $this->writer->write($this->getAsciiWithFrame($image->getAsciiLines(), $width, $caption));
         $this->writer->write(PHP_EOL);
 
         $this->writer->write(PHP_EOL);
