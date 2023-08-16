@@ -109,6 +109,7 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLatitude', null, null, -33.940525, 18.414006, -33.940525], // Kapstadt, South Africa
             [++$number, 'getLatitude', null, null, 40.690069, -74.045508, 40.690069], // New York, United States
             [++$number, 'getLatitude', null, null, -31.425299, -64.201743, -31.425299], // Córdoba, Argentina
+            [++$number, 'getLatitude', null, null, 51.505554, -0.075278, 51.505554], // Tower Bridge, London, Great Britain
 
             /**
              * getLongitude (decimal degree given by float values)
@@ -117,6 +118,7 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLongitude', null, null, -33.940525, 18.414006, 18.414006], // Kapstadt, South Africa
             [++$number, 'getLongitude', null, null, 40.690069, -74.045508, -74.045508], // New York, United States
             [++$number, 'getLongitude', null, null, -31.425299, -64.201743, -64.201743], // Córdoba, Argentina
+            [++$number, 'getLongitude', null, null, 51.505554, -0.075278, -0.075278], // Tower Bridge, London, Great Britain
 
         ];
     }
@@ -139,6 +141,7 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLatitude', null, null, '-33.940525', '18.414006', -33.940525], // Kapstadt, South Africa
             [++$number, 'getLatitude', null, null, 40.690069, '-74.045508', 40.690069], // New York, United States
             [++$number, 'getLatitude', null, null, '-31.425299', -64.201743, -31.425299], // Córdoba, Argentina
+            [++$number, 'getLatitude', null, null, '51.505554', '-0.075278', 51.505554], // Tower Bridge, London, Great Britain
 
             /**
              * getLongitude (decimal degree given by string values)
@@ -147,6 +150,7 @@ final class CoordinateTest extends TestCase
             [++$number, 'getLongitude', null, null, '-33.940525', '18.414006', 18.414006], // Kapstadt, South Africa
             [++$number, 'getLongitude', null, null, 40.690069, '-74.045508', -74.045508], // New York, United States
             [++$number, 'getLongitude', null, null, '-31.425299', -64.201743, -64.201743], // Córdoba, Argentina
+            [++$number, 'getLongitude', null, null, '51.505554', '-0.075278', -0.075278], // Tower Bridge, London, Great Britain
 
             /**
              * getLatitude (decimal degree given by dms string values)

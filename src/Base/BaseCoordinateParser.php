@@ -213,7 +213,9 @@ abstract class BaseCoordinateParser
         $integerConverted = (float) $matches[1];
         $decimalsConverted = floatval(intval($matches[2]) * 10 ** (-strlen($matches[2])));
 
-        return $integerConverted + ($integerConverted < 0 ? -1 : 1) * $decimalsConverted;
+        $isNegative = $integerConverted < 0 || $matches[1] === '-0';
+
+        return $integerConverted + ($isNegative ? -1 : 1) * $decimalsConverted;
     }
 
     /**
