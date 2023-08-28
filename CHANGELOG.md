@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.20] - 2023-08-28
+
+* Add getRaw method to Coordinate class
+
 ### [0.1.19] - 2023-08-16
 
 * Fix -0 detection

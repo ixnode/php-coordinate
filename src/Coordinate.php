@@ -122,6 +122,16 @@ class Coordinate extends BaseCoordinate
     }
 
     /**
+     * Returns the given raw string.
+     *
+     * @return string
+     */
+    public function getRaw(): string
+    {
+        return $this->raw;
+    }
+
+    /**
      * Returns the string representation of the coordinate.
      *
      * @return string

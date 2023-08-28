@@ -15,7 +15,6 @@ namespace Ixnode\PhpCoordinate\Base;
 
 use DateTimeZone;
 use Exception;
-use Ixnode\PhpException\ArrayType\ArrayKeyNotFoundException;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
 
 /**
@@ -92,6 +91,8 @@ abstract class BaseCoordinateParser
     private const VERSION_V1 = 'v1';
 
     protected const VERSION_V2 = 'v2';
+
+    protected const VALUE_ZERO_NEGATIVE = '-0';
 
     protected string $coordinate;
 
@@ -213,7 +214,7 @@ abstract class BaseCoordinateParser
         $integerConverted = (float) $matches[1];
         $decimalsConverted = floatval(intval($matches[2]) * 10 ** (-strlen($matches[2])));
 
-        $isNegative = $integerConverted < 0 || $matches[1] === '-0';
+        $isNegative = $integerConverted < 0 || $matches[1] === self::VALUE_ZERO_NEGATIVE;
 
         return $integerConverted + ($isNegative ? -1 : 1) * $decimalsConverted;
     }

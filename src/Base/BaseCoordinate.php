@@ -29,6 +29,8 @@ use JetBrains\PhpStorm\NoReturn;
  */
 abstract class BaseCoordinate
 {
+    protected string $raw;
+
     protected CoordinateValueLatitude $latitude;
 
     protected CoordinateValueLongitude $longitude;
@@ -52,6 +54,8 @@ abstract class BaseCoordinate
         if (count($arguments) < self::ARGUMENTS_1) {
             throw new CaseUnsupportedException('No coordinates are given.');
         }
+
+        $this->raw = implode(' ', $arguments);
 
         $result = match (true) {
             /* 1 argument as string given. */
