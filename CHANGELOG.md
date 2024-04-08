@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Releases
 
+### [0.1.21] - 2024-04-08
+
+* Fix wrong given coordinates like this:
+  * 51,0504,13,7373 -> 51.0504,13.7373
+  * -31,425299, -64,201743 -> -31.425299, -64.201743
+  * etc.
+
 ### [0.1.20] - 2023-08-28
 
 * Add getRaw method to Coordinate class

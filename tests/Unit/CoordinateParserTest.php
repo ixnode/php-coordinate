@@ -84,8 +84,10 @@ final class CoordinateParserTest extends TestCase
             [++$number, 'POINT(51.0504,  13.7373)', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, 'POINT(51.0504 13.7373)', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '-33.940525, 18.414006', [-33.940525, 18.414006]], // Kapstadt, South Africa
+            [++$number, '-33,940525, 18,414006', [-33.940525, 18.414006]], // Kapstadt, South Africa
             [++$number, '40.690069, -74.045508', [40.690069, -74.045508]], // New York, United States
             [++$number, '-31.425299, -64.201743', [-31.425299, -64.201743]], // Córdoba, Argentina
+            [++$number, '-31,425299, -64,201743', [-31.425299, -64.201743]], // Córdoba, Argentina
 
             /**
              * basic DMS tests (v1)
