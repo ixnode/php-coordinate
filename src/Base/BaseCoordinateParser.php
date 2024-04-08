@@ -16,6 +16,7 @@ namespace Ixnode\PhpCoordinate\Base;
 use DateTimeZone;
 use Exception;
 use Ixnode\PhpException\Case\CaseUnsupportedException;
+use LogicException;
 
 /**
  * Class CoordinateParser
@@ -38,6 +39,9 @@ abstract class BaseCoordinateParser
 
     /* 51.0504, 13.7373, -33.940525, 18.414006, 40.690069, -74.045508, etc. */
     final public const REGEXP_PARSER_DECIMAL_DEGREE_PART = '(-?[0-9]+)[.]([0-9]+)';
+
+    final public const REGEXP_PARSER_DECIMAL_DEGREE_PART_COMMA = '(-?[0-9]+)[,]([0-9]+)';
+
     final public const REGEXP_PARSER_DECIMAL_DEGREE = '~'.self::REGEXP_PARSER_DECIMAL_DEGREE_PART.'~';
 
     /* 51°3′1.44″N, 13°44′14.28″E, etc. */
@@ -107,8 +111,41 @@ abstract class BaseCoordinateParser
      */
     public function __construct(string $coordinate)
     {
-        $this->coordinate = trim($coordinate);
+        $this->coordinate = $this->doGetCoordinate($coordinate);
         $this->parsed = $this->doParse();
+    }
+
+    /**
+     * Fixes the given coordinate string (coordinate).
+     *
+     * @param string $coordinate
+     * @return string
+     */
+    private function doGetCoordinate(string $coordinate): string
+    {
+        return $this->fixCoordinate(trim($coordinate));
+    }
+
+    /**
+     * Fixes coordinates like this: 51,0504,13,7373 -> 51.0504,13.7373
+     *
+     * @param string $coordinate
+     * @return string
+     */
+    private function fixCoordinate(string $coordinate): string
+    {
+        $coordinate = preg_replace(sprintf(
+            '~%s%s%s~',
+            self::REGEXP_PARSER_DECIMAL_DEGREE_PART_COMMA,
+            self::REGEXP_SPLIT_PART,
+            self::REGEXP_PARSER_DECIMAL_DEGREE_PART_COMMA
+        ), '$1.$2,$3.$4', $coordinate);
+
+        if (!is_string($coordinate)) {
+            throw new LogicException('Unable to replace coordinate.');
+        }
+
+        return $coordinate;
     }
 
     /**

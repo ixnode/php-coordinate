@@ -70,10 +70,12 @@ final class CoordinateParserTest extends TestCase
              * basic decimal degree tests
              */
             [++$number, '51.0504,13.7373', [51.0504, 13.7373]], // Dresden, Germany
+            [++$number, '51,0504,13,7373', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '51.0504, 13.7373', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '51.0504,  13.7373', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '51.0504,  13.7373 ', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, ' 51.0504,  13.7373', [51.0504, 13.7373]], // Dresden, Germany
+            [++$number, ' 51,0504,  13,7373', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '    51.0504,  13.7373      ', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '51.0504 13.7373', [51.0504, 13.7373]], // Dresden, Germany
             [++$number, '51.0504:13.7373', [51.0504, 13.7373]], // Dresden, Germany
