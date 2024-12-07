@@ -1,6 +1,7 @@
 {
   "name": "ixnode/php-coordinate",
   "description": "PHP Coordinate - This library offers a collection of various PHP coordinate classes like Coordinate, etc.",
+  "version": "1.0.0",
   "type": "library",
   "license": "MIT",
   "keywords": ["php", "coordinate", "conversion", "parser", "latitude", "longitude"],
