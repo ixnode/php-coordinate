@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df7089d88c9a401624ce76a8897ca291",
+    "content-hash": "c68d81c3c12ef6437ef7488a40baddde",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -78,22 +78,23 @@
         },
         {
             "name": "ixnode/php-cli-image",
-            "version": "0.1.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ixnode/php-cli-image.git",
-                "reference": "81b42ea8be269e295eb1661be3da748e6e4db8c3"
+                "reference": "7f564a9866a626779c118d3baec9ee4f644b63c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ixnode/php-cli-image/zipball/81b42ea8be269e295eb1661be3da748e6e4db8c3",
-                "reference": "81b42ea8be269e295eb1661be3da748e6e4db8c3",
+                "url": "https://api.github.com/repos/ixnode/php-cli-image/zipball/7f564a9866a626779c118d3baec9ee4f644b63c8",
+                "reference": "7f564a9866a626779c118d3baec9ee4f644b63c8",
                 "shasum": ""
             },
             "require": {
                 "adhocore/cli": "^v1.0.0",
                 "ext-curl": "*",
                 "ext-gd": "*",
+                "ext-imagick": "*",
                 "ixnode/php-exception": "^0.1.21",
                 "php": "^8.2"
             },
@@ -140,9 +141,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ixnode/php-cli-image/issues",
-                "source": "https://github.com/ixnode/php-cli-image/tree/0.1.1"
+                "source": "https://github.com/ixnode/php-cli-image/tree/1.0.0"
             },
-            "time": "2023-08-14T06:18:19+00:00"
+            "time": "2024-12-07T11:35:11+00:00"
         },
         {
             "name": "ixnode/php-exception",
@@ -4832,7 +4833,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -4840,6 +4841,6 @@
         "ext-curl": "*",
         "ext-gd": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
